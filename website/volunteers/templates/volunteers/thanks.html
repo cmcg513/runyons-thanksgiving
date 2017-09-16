@@ -1,0 +1,17 @@
+{% extends "basic/base.html" %}
+{% load static %}
+
+{% block custom_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'volunteers/about.css' %}"/>
+{% endblock %}
+
+{% block volunteers_active %}<li class="nav-item dropdown active">{% endblock %}
+
+{% block content %}
+<h1>Thanks!</h1>
+<p>
+    Thank you! We truly appreciate your interest in volunteering. One of our coordinators will get back to you soon.
+    <br>
+    Happy Thanksgiving!
+</p>
+{% endblock %}
