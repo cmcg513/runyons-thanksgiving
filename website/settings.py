@@ -120,3 +120,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+RECAPTCHA_URL = 'https://www.google.com/recaptcha/api/siteverify'
+RECAPTCHA_PUBLIC_KEY = '6Lex7TEUAAAAAFFvBC8SWxjwAYh4ft9UC11KRkE4'
