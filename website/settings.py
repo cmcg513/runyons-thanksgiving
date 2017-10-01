@@ -124,6 +124,10 @@ STATIC_URL = '/static/'
 RECAPTCHA_URL = 'https://www.google.com/recaptcha/api/siteverify'
 RECAPTCHA_PUBLIC_KEY = '6Lex7TEUAAAAAFFvBC8SWxjwAYh4ft9UC11KRkE4'
 
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+
 # Import local_settings
 try:
     from website.local_settings import *
