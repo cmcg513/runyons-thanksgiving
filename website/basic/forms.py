@@ -30,8 +30,8 @@ class PhoneField(forms.CharField):
         try:
             parsed = parse(value,'US')
         except NumberParseException:
-            raise ValidationError('Please enter a valid phone number (e.g. ' \
-                '(XXX) XXX-XXXX)')
+            raise ValidationError('Please enter a valid phone number, e.g. ' \
+                '(555) 555-5555')
         except Exception:
             raise ValidationError('We\'re sorry, but something went wrong. ' \
                 'Enter your phone number again')
