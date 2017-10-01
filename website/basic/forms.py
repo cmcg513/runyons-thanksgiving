@@ -19,27 +19,23 @@ class PhoneField(forms.CharField):
             empty_value,
             *args,
             **kwargs)
-        self.validators.append(validate_phone_number)
 
     def clean(self, value):
         """
         Validate value as per usual, and then parse
         """
-        # print("CLEAN")
-        # print(value)
         value = self.to_python(value)
         self.validate(value)
         self.run_validators(value)
-        # print("BEFORE parse")
-        phone_number = parse(value,'US')
-        return phone_number.national_number
+        try:
+            parsed = parse(value,'US')
+        except NumberParseException:
+            raise ValidationError('%s is not a valid phone number' % value)
+        except Exception:
+            raise ValidationError('%s could not be validated' % value)
 
-def validate_phone_number(value):
-    # print("VALIDATE")
-    # print(value)
-    try:
-        parse(value,'US')
-    except NumberParseException:
-        raise ValidationError('%s is not a valid phone number' % value)
-    except Exception:
-        raise ValidationError('%s could not be validated' % value)
+        phone_number = str(parsed.national_number)
+        if len(phone_number) < 10:
+            raise ValidationError('The phone number provided must have at ' \
+                'least 10 digits. Please ensure you provide an area code')
+        return phone_number
