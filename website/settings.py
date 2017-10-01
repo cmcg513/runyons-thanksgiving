@@ -20,10 +20,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '6*ljspqk5&egxd_q(h^f)&%(v)%8e46#^3rt_=1b_-b*ncge-y'
+SECRET_KEY = 'changeme'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -123,3 +123,9 @@ STATIC_URL = '/static/'
 
 RECAPTCHA_URL = 'https://www.google.com/recaptcha/api/siteverify'
 RECAPTCHA_PUBLIC_KEY = '6Lex7TEUAAAAAFFvBC8SWxjwAYh4ft9UC11KRkE4'
+
+# Import local_settings
+try:
+    from website.local_settings import *
+except ImportError:
+    pass
