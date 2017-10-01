@@ -91,6 +91,6 @@ def _successful_captcha(response):
     successfully
     """
     if response.status_code == 200:
-        content = json.loads(response.content)
+        content = json.loads(response.content.decode('utf-8'))
         return content['success']
     return False
