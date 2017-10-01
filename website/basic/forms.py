@@ -30,9 +30,11 @@ class PhoneField(forms.CharField):
         try:
             parsed = parse(value,'US')
         except NumberParseException:
-            raise ValidationError('%s is not a valid phone number' % value)
+            raise ValidationError('Please enter a valid phone number (e.g. ' \
+                '(XXX) XXX-XXXX)')
         except Exception:
-            raise ValidationError('%s could not be validated' % value)
+            raise ValidationError('We\'re sorry, but something went wrong. ' \
+                'Enter your phone number again')
 
         phone_number = str(parsed.national_number)
         if len(phone_number) < 10:
