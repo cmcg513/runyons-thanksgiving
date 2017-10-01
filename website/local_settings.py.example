@@ -1,0 +1,10 @@
+RECAPTCHA_PRIVATE_KEY = 'changeme'
+
+SECRET_KEY = 'changeme'
+
+DEBUG = False
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+ALLOWED_HOSTS = ['www.runyonsthanksgiving.com']
