@@ -1,5 +1,5 @@
 {% load static %}
-
+{% autoescape on %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -13,6 +13,8 @@
 
     {# Bootstrap core CSS #}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+    <link rel="shortcut icon" href="{% static 'basic/images/favicon.ico' %}" />
 
     {# Custom styles for this template #}
     {# <link href="starter-template.css" rel="stylesheet"> #}
@@ -68,3 +70,4 @@
     {# <script src="../../../../assets/js/ie10-viewport-bug-workaround.js"></script> #}
   </body>
 </html>
+{% endautoescape %}
