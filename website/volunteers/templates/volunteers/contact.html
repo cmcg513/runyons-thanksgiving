@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block custom_css %}
-<link rel="stylesheet" type="text/css" href="{% static 'volunteers/contact.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'volunteers/css/contact.css' %}"/>
 {% endblock %}
 
 {% block volunteers_active %}<li class="nav-item dropdown active">{% endblock %}
@@ -10,23 +10,150 @@
 {% block content %}
 <h1>Contact Us</h1>
 <p>
-    Please fill out your info below. Provide your name, email and best phone number. 
-    <br>
-    In addition, we need to know how many adults/children are in your group. Knowing if there are children in your group is especially important (e.g. if you end up delivering meals, we don't want to send any children to any potentially unsafe neighborhoods). 
-    <br>
+    Please fill out your information below. In addition, we also ask how many adults/children are in your group so that we can best accommodate your needs.
+<p>    
     Also, please indicate whether you are interested in volunteering in-house or driving, or if you're open to either.
-    <br>
-    Finally, feel free to include any additional details you think may be relevant in the body section below. For people interested in driving, we will do our best to accomodate requests as to route area preferences.
 </p>
-<form id="contact_form" action="" method="post">
+<p>    
+    Please indicate whether you are interested in volunteering to drive or to package meals in-house, or if you're open to either. If you have volunteered in the past, please indicate that along with any additional relevant details in the 'Additional details' section below.
+</p>
+<p>
+    For those of you who are new to Runyon’s Thanksgiving, we often have the most need for volunteers to drive a delivery route on Thanksgiving Day. If you volunteer to be a driver, will assign you a time in the mid-late morning to arrive at Runyon’s and pick up the meals. We will provide you with a route of generally 4-8 addresses in a designated area and ample directions and instructions for delivery to the clients. We prefer two adults to be present for all delivery routes.
+</p>
+<p>
+    If you are interested in volunteering in-house on Thanksgiving morning, you will assist in packaging items at Runyon’s in the early morning for the meals to be delivered.
+</p>
+<p>
+    Thank you for your interest and generosity!
+</p>
+<form id="contact_form" action="" method="post" novalidate>
     {% csrf_token %}
-    {{ form.as_p }}
-    {% if error_message %}
-    <p class='error'>
-        {{ error_message }}
-    </p>
-    {% endif %}
+    <div class="form-group">
+        <label class="form-control-label" for="id_name">Name:</label>
+        <input type="text" name="name" id="id_name" class="form-control 
+        {% if resubmit %} 
+            {% if form.name.errors %} 
+                is-invalid 
+            {% else %} 
+                is-valid 
+            {% endif %} 
+        {% endif %}" placeholder="John Smith" {% if form.name.value != None %} value="{{ form.name.value }}" {% endif %} required />
+        {% if form.name.errors %}
+        {% for error in form.name.errors %}
+        <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+        {% endif %}
+        
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label class="form-control-label" for="id_email">Email:</label>
+            <input type="email" name="email" id="id_email" class="form-control 
+            {% if resubmit %} 
+                {% if form.email.errors %} 
+                    is-invalid 
+                {% else %} 
+                    is-valid 
+                {% endif %} 
+            {% endif %}" placeholder="name@example.com" {% if form.email.value != None %} value="{{ form.email.value }}" {% endif %} required />
+            {% if form.email.errors %}
+            {% for error in form.email.errors %}
+            <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+            {% endif %}
+        </div>
+        <div class="form-group col-md-6">
+            <label for="id_phone">Phone:</label>
+            <input type="text" name="phone" id="id_phone" class="form-control 
+            {% if resubmit %} 
+                {% if form.phone.errors %} 
+                    is-invalid 
+                {% else %} 
+                    is-valid 
+                {% endif %} 
+            {% endif %}" placeholder="(555) 555-5555" {% if form.phone.value != None %} value="{{ form.phone.value }}" {% endif %} required />
+            {% if form.phone.errors %}
+            {% for error in form.phone.errors %}
+            <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label for="id_number_of_adults">Number of adults:</label>
+            <input type="number" name="number_of_adults" id="id_number_of_adults" class="form-control 
+            {% if resubmit %} 
+                {% if form.number_of_adults.errors %} 
+                    is-invalid 
+                {% else %} 
+                    is-valid 
+                {% endif %} 
+            {% endif %}" {% if form.number_of_adults.value != None %} value="{{ form.number_of_adults.value }}" {% endif %} required />
+            {% if form.number_of_adults.errors %}
+            {% for error in form.number_of_adults.errors %}
+            <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+            {% endif %}
+        </div>
+        <div class="form-group col-md-4">
+            <label for="id_number_of_children">Number of children:</label>
+            <input type="number" name="number_of_children" id="id_number_of_children" class="form-control 
+            {% if resubmit %} 
+                {% if form.number_of_children.errors %} 
+                    is-invalid 
+                {% else %} 
+                    is-valid 
+                {% endif %} 
+            {% endif %}" {% if form.number_of_children.value %} value="{{ form.number_of_children.value }}" {% endif %} required />
+            {% if form.number_of_children.errors %}
+            {% for error in form.number_of_children.errors %}
+            <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+            {% endif %}
+        </div>
+        <div class="form-group col-md-4">
+            <label for="id_preference">Preference:</label>
+            <select name="preference" id="id_preference" class="form-control 
+                {% if resubmit %} 
+                    {% if form.preference.errors %} 
+                        is-invalid 
+                    {% else %} 
+                        is-valid 
+                    {% endif %} 
+                {% endif %}">
+                {% for value,display_text in form.fields.preference.choices %}
+                    <option value="{{ value }}"{% if form.fields.preference.value == value %} selected{% endif %}>{{ display_text }}</option>
+                {% endfor %}
+            </select>
+            {% if form.preference.errors %}
+            {% for error in form.preference.errors %}
+            <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="id_details">Additional details:</label>
+        <textarea name="details" placeholder="Enter additional details here..." id="id_details" cols="50" rows="5" class="form-control 
+            {% if resubmit %} 
+                {% if form.details.errors %} 
+                    is-invalid 
+                {% else %} 
+                    is-valid 
+                {% endif %} 
+            {% endif %}"></textarea>
+        {% if form.details.errors %}
+        {% for error in form.details.errors %}
+        <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+        {% endif %}
+    </div>
+
     <div class="g-recaptcha" data-sitekey="6Lex7TEUAAAAAFFvBC8SWxjwAYh4ft9UC11KRkE4"></div>
-    <input type="submit" value="Submit" />
+    {% if error_message %}
+    <div class="captcha-error">{{ error_message }}</div>
+    {% endif %}
+    <input type="submit" class="btn btn-primary" value="Submit" />
 </form>
 {% endblock %}
