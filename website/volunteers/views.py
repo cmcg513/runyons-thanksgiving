@@ -1,8 +1,23 @@
 from django.shortcuts import render, redirect
 from . import forms
-from website.settings import RECAPTCHA_URL, RECAPTCHA_PUBLIC_KEY, RECAPTCHA_PRIVATE_KEY, DEBUG
+from website.settings import RECAPTCHA_URL, RECAPTCHA_PUBLIC_KEY, RECAPTCHA_PRIVATE_KEY, DEBUG, SHEETS_INPUT_OPTION, VOLUNTEER_API_KEY, SHEETS_API_SCOPE, GOOGLE_DISCOVERY_URL, VOLUNTEER_SPREADSHEET_ID
 import requests
 import json
+from datetime import datetime
+import pytz
+from oauth2client.service_account import ServiceAccountCredentials
+import httplib2
+from apiclient import discovery
+
+key_order = [
+    'name',
+    'email',
+    'phone',
+    'number_of_adults',
+    'number_of_children',
+    'preference',
+    'details'
+]
 
 def index(request):
     """
@@ -25,6 +40,9 @@ def contact(request):
     # default to no error messages
     error_message = None
 
+    # defaults to assuming this is a resubmit
+    resubmit = True
+
     # handle POST
     if request.method == 'POST':
         if DEBUG:
@@ -32,6 +50,8 @@ def contact(request):
 
         # parse form data
         form = forms.ContactForm(request.POST)
+
+        print(form)
 
         # validate form
         if form.is_valid():
@@ -52,7 +72,11 @@ def contact(request):
 
             # render 'Thanks' on success
             if _successful_captcha(resp):
-                return redirect('volunteers:thanks')
+                try:
+                    _push_to_sheets(form)
+                    return redirect('volunteers:thanks')
+                except:
+                    error_message='An unexpected error has occurred'
             else:
                 # else, pass on the error
                 error_message = 'Failed to validate CAPTCHA. Please make sure you check the box below'
@@ -60,15 +84,32 @@ def contact(request):
     else:
         # init blank form
         form = forms.ContactForm()
+        resubmit = False
 
     # render response
-    return render(request, 'volunteers/contact.html', {'form': form, 'error_message': error_message})
+    return render(request, 'volunteers/contact.html', {'form': form, 'error_message': error_message, 'resubmit': resubmit})
 
 def thanks(request):
     """
     View for the 'Thanks' page
     """
     return render(request, 'volunteers/thanks.html', {})
+
+def _push_to_sheets(form):
+    # import IPython; IPython.embed()
+    credentials = ServiceAccountCredentials.from_json_keyfile_name(VOLUNTEER_API_KEY, SHEETS_API_SCOPE)
+    http = credentials.authorize(httplib2.Http())
+    service = discovery.build('sheets', 'v4', http=http, discoveryServiceUrl=GOOGLE_DISCOVERY_URL)
+    sheets = service.spreadsheets()
+    utc = pytz.timezone('UTC')
+    eastern = pytz.timezone('US/Eastern')
+    dt = utc.localize(datetime.now()).astimezone(eastern).strftime("%Y-%m-%d %H:%M:%S.%s")
+    body = [dt]
+    for key in key_order:
+        body.append(form.data[key])
+    body = {'values':[body]}
+    request = sheets.values().append(spreadsheetId=VOLUNTEER_SPREADSHEET_ID, body=body, range='A:A', valueInputOption=SHEETS_INPUT_OPTION)
+    request.execute()
 
 def _get_client_ip(request):
     """
