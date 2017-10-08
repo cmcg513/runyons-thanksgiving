@@ -7,15 +7,15 @@ class ContactForm(forms.Form):
     phone = PhoneField(required=True)
     number_of_adults = forms.IntegerField(required=True)
     number_of_children = forms.IntegerField(required=True)
-    preference = forms.CharField(
+    preference = forms.ChoiceField(
         required=True,
-        widget=forms.Select(choices=(
-            ('in_house','in house'),
+        choices=(
             ('driver','driver'),
-            ('either','either')
-            ))
+            ('in_house','in house'),
+            ('no_preference','no preference')
+            )
         )
-    body = forms.CharField(
-        required=True,
-        widget=forms.Textarea(attrs={'rows': '5', 'cols': '50'})
+    details = forms.CharField(
+        required=False,
+        widget=forms.Textarea()
     )
