@@ -21,6 +21,7 @@ urlpatterns = [
     # url(r'^admin/', admin.site.urls),
     url(r'^', include('website.basic.urls')),
     url(r'^volunteers/', include('website.volunteers.urls')),
+    url(r'^donations/', include('website.donations.urls')),
     # url(r'^login/$', views.login),
     # url(r'^meals/', include('meals.urls')),
 ]

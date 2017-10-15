@@ -38,11 +38,14 @@
             <a class="nav-link" href="{% url 'basic:index' %}">Home<span class="sr-only">(current)</span></a>
           </li>
           {% block volunteers_active %}<li class="nav-item dropdown">{% endblock %}
-            <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Volunteers</a>
+            <a class="nav-link dropdown-toggle" href="{% url 'volunteers:index' %}" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Volunteers</a>
             <div class="dropdown-menu" aria-labelledby="dropdown01">
               <a class="dropdown-item" href="{% url 'volunteers:about' %}">About</a>
               <a class="dropdown-item" href="{% url 'volunteers:contact' %}">Contact</a>
             </div>
+          </li>
+          {% block donations_active %}<li class="nav-item">{% endblock %}
+            <a class="nav-link" href="{% url 'donations:index' %}">Donations</a>
           </li>
           {% block meals_active %}<li class="nav-item">{% endblock %}
             <a class="nav-link disabled" href="#">Meals</a>

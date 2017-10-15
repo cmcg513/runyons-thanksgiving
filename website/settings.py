@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'website.basic',
-    'website.volunteers'
+    'website.volunteers',
+    'website.donations'
 ]
 
 MIDDLEWARE = [
