@@ -1,0 +1,15 @@
+{% extends "basic/base.html" %}
+{% load static %}
+
+{% block custom_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'basic/css/style.css' %}"/>
+{% endblock %}
+
+{% block home_active %}<li class="nav-item active">{% endblock %}
+
+{% block content %}
+<h1>403 - Oops!</h1>
+<p class="lead">
+  Look like you don't have permission to view this page :(
+</p>
+{% endblock %}
