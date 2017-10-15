@@ -3,3 +3,7 @@ db.sqlite3
 *.pyc
 local_settings.py
 .DS_Store
+website/basic/static/basic/images/1.jpg
+website/basic/static/basic/images/2.jpg
+website/basic/static/basic/images/3.jpg
+website/basic/static/basic/images/4.jpg
