@@ -6,7 +6,7 @@ class ContactForm(forms.Form):
     email = forms.EmailField(required=True)
     phone = PhoneField(required=True)
     number_of_adults = forms.IntegerField(required=True)
-    number_of_children = forms.IntegerField(required=True)
+    number_of_children = forms.IntegerField(required=False)
     preference = forms.ChoiceField(
         required=True,
         choices=(

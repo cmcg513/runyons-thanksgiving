@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block custom_css %}
-<link rel="stylesheet" type="text/css" href="{% static 'volunteers/about.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'volunteers/css/about.css' %}"/>
 {% endblock %}
 
 {% block volunteers_active %}<li class="nav-item dropdown active">{% endblock %}
@@ -13,10 +13,12 @@
     Every year, we are humbled by the number of people who want to volunteer their time on Thanksgiving. While we rarely have a shortage of volunteers, we occasionally do have a shortage of donations. 
 </p>
 <p>    
-    If you'd like to donate, please contact (???) ???-????
+    If you'd like to <a href="{% url 'donations:index' %}">donate</a>, please review the list of items we still need on the 'Donations' page.
 </p>
 <p>    
-    If you'd like to volunteer, please fill out our contact form and someone will follow up with you as soon as possible.
+    If you'd like to volunteer, please fill out our <a href="{% url 'volunteers:contact' %}">contact form</a> and someone will follow up with you as soon as possible.
 </p>
 <a href="{% url 'volunteers:contact' %}">Contact Us</a>
+<br>
+<a href="{% url 'donations:index' %}">Donations</a>
 {% endblock %}

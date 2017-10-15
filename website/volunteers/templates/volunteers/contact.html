@@ -18,7 +18,7 @@
     Please indicate whether you are interested in volunteering to drive or to package meals in-house, or if you're open to either. If you have volunteered in the past, please indicate that along with any additional relevant details in the 'Additional details' section below.
 </p>
 <p>
-    For those of you who are new to Runyon’s Thanksgiving, we often have the most need for volunteers to drive a delivery route on Thanksgiving Day. If you volunteer to be a driver, will assign you a time in the mid-late morning to arrive at Runyon’s and pick up the meals. We will provide you with a route of generally 4-8 addresses in a designated area and ample directions and instructions for delivery to the clients. We prefer two adults to be present for all delivery routes.
+    For those of you who are new to Runyon’s Thanksgiving, we often have the most need for volunteers to drive a delivery route on Thanksgiving Day. If you volunteer to be a driver, we will assign you a time in the mid-late morning to arrive at Runyon’s and pick up the meals. We will provide you with a route of generally 4-8 addresses in a designated area and ample directions and instructions for delivery to the clients. We prefer two adults to be present for all delivery routes.
 </p>
 <p>
     If you are interested in volunteering in-house on Thanksgiving morning, you will assist in packaging items at Runyon’s in the early morning for the meals to be delivered.
@@ -105,7 +105,7 @@
                 {% else %} 
                     is-valid 
                 {% endif %} 
-            {% endif %}" {% if form.number_of_children.value %} value="{{ form.number_of_children.value }}" {% endif %} required />
+            {% endif %}" {% if form.number_of_children.value %} value="{{ form.number_of_children.value }}" {% endif %}/>
             {% if form.number_of_children.errors %}
             {% for error in form.number_of_children.errors %}
             <div class="invalid-feedback">{{ error }}</div>
@@ -123,7 +123,7 @@
                     {% endif %} 
                 {% endif %}">
                 {% for value,display_text in form.fields.preference.choices %}
-                    <option value="{{ value }}"{% if form.fields.preference.value == value %} selected{% endif %}>{{ display_text }}</option>
+                    <option value="{{ value }}"{% if form.preference.value == value %} selected{% endif %}>{{ display_text }}</option>
                 {% endfor %}
             </select>
             {% if form.preference.errors %}
@@ -142,7 +142,7 @@
                 {% else %} 
                     is-valid 
                 {% endif %} 
-            {% endif %}"></textarea>
+            {% endif %}">{% if form.details.value != None %}{{ form.details.value }}{% endif %}</textarea>
         {% if form.details.errors %}
         {% for error in form.details.errors %}
         <div class="invalid-feedback">{{ error }}</div>
