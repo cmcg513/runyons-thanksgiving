@@ -2,53 +2,44 @@
 {% load static %}
 
 {% block custom_css %}
-<link rel="stylesheet" type="text/css" href="{% static 'donations/css/style.css' %}?v=1.0"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'donations/css/style.css' %}?v=1.0"/>
 {% endblock %}
 
 {% block donations_active %}<li class="nav-item dropdown active">{% endblock %}
 
 {% block content %}
-<h1>Donations</h1>
-<p>
-    Thanks you for your interest in donating! 
-</p>
-<p>
-    Below is the list of the items that we still need. Donations can be dropped off at <a href="https://www.google.com/maps/place/Runyon's/@40.6661078,-73.4869976,18z/data=!4m12!1m6!3m5!1s0x89c27f6b0031b92d:0x7f5d67ebb1198b96!2sRunyon's!8m2!3d40.6660488!4d-73.4860803!3m4!1s0x89c27f6b0031b92d:0x7f5d67ebb1198b96!8m2!3d40.6660488!4d-73.4860803">Runyon's</a>, at your convenience.
-</p>
-<table id="items-needed" class="table table-striped">
-    <thead>
-        <tr>
-            <th>Number needed</th>
-            <th>Item</th>
-            <th>Notes</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>20</td>
-            <td>Turkey</td>
-            <td>Boneless turkey breasts are easiest</td>
-        </tr>
-        <tr>
-            <td>20</td>
-            <td>Ham</td>
-            <td>Boneless deli style hams are easiest</td>
-        </tr>
-        <tr>
-            <td>500</td>
-            <td>Cranberry sauce</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>500</td>
-            <td>Canned vegetables</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>1500</td>
-            <td>Desserts</td>
-            <td>Individually portioned desserts are easiest</td>
-        </tr>
-    </tbody>
-</table>
+    <h1>Donations</h1>
+    <p>
+        Thanks you for your interest in donating!
+    </p>
+    {% if error_msg %}
+        <p>
+            {{ error_msg }}
+        </p>
+    {% else %}
+        <p>
+            Below is the list of the items that we still need. Donations can be dropped off at <a href="https://www.google.com/maps/place/Runyon's/@40.6661078,-73.4869976,18z/data=!4m12!1m6!3m5!1s0x89c27f6b0031b92d:0x7f5d67ebb1198b96!2sRunyon's!8m2!3d40.6660488!4d-73.4860803!3m4!1s0x89c27f6b0031b92d:0x7f5d67ebb1198b96!8m2!3d40.6660488!4d-73.4860803">Runyon's</a>, at your convenience.
+        </p>
+        <p>
+            Counts will be updated as time goes on, and items we no longer need will be marked as such. Thank you again!
+        </p>
+        <table id="items-needed" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Number needed</th>
+                    <th>Item</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in donations %}
+                <tr>
+                    {% for item in row %}
+                    <td> {{ item }} </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
 {% endblock %}
