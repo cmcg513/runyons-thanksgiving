@@ -1,3 +1,4 @@
+# token used as private key for Google captcha
 RECAPTCHA_PRIVATE_KEY = 'changeme'
 
 SECRET_KEY = 'changeme'
@@ -8,6 +9,15 @@ SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
 ALLOWED_HOSTS = ['www.runyonsthanksgiving.com']
+
+# id of the spreadsheet
+VOLUNTEER_SPREADSHEET_ID = 'changeme'
+
+# path to Google Sheets API key
+VOLUNTEER_API_KEY = 'changeme'
+
+# path to donations CSV data
+DONATIONS_CSV_PATH = 'changeme'
 
 SECURE_HSTS_SECONDS = 3600
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
