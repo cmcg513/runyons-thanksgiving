@@ -11,14 +11,14 @@ CSRF_COOKIE_SECURE = True
 
 ALLOWED_HOSTS = ['www.runyonsthanksgiving.com']
 
-# id of the spreadsheet
+# id of the volunteers spreadsheet
 VOLUNTEER_SPREADSHEET_ID = 'changeme'
 
-# path to Google Sheets API key
-VOLUNTEER_API_KEY = 'changeme'
+# id of the donations spreadsheet
+DONATIONS_SPREADSHEET_ID = 'changeme'
 
-# path to donations CSV data
-DONATIONS_CSV_PATH = 'changeme'
+# path to Google Sheets API key
+SHEETS_API_KEY = 'changeme'
 
 SECURE_HSTS_SECONDS = 3600
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True

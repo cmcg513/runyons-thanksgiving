@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from website.settings import DONATIONS_CSV_PATH
-import csv
+from website.settings import DONATIONS_SPREADSHEET_ID
+from website.shared import utils
 
 
 def index(request):
@@ -9,13 +9,17 @@ def index(request):
     """
     donations = []
     try:
-        with open(DONATIONS_CSV_PATH, 'r') as f:
-            reader = csv.reader(f, delimiter=',')
-            for row in reader:
-                if len(row) != 3:
-                    continue
-                donations.append(row)
-    except (csv.Error, FileNotFoundError):
+        data = utils.pull_data_from_sheets(DONATIONS_SPREADSHEET_ID)
+        for row in data:
+            if len(row) == 0:
+                continue
+            elif len(row) < 3:
+                while len(row) < 3:
+                    row.append('')
+            elif len(row) > 3:
+                raise ValueError('Too many values!')
+            donations.append(row)
+    except Exception:
         pass
 
     if len(donations) == 0:

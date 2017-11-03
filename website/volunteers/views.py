@@ -73,7 +73,7 @@ def contact(request):
                 try:
                     utils.push_form_to_sheets(VOLUNTEER_SPREADSHEET_ID, form, key_order)
                     return redirect('volunteers:thanks')
-                except:
+                except Exception:
                     error_message = 'An unexpected error has occurred'
             else:
                 # else, pass on the error

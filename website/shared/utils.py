@@ -1,4 +1,4 @@
-from website.settings import VOLUNTEER_API_KEY, SHEETS_API_SCOPE, GOOGLE_DISCOVERY_URL, SHEETS_INPUT_OPTION
+from website.settings import SHEETS_API_KEY, SHEETS_API_SCOPE, GOOGLE_DISCOVERY_URL, SHEETS_INPUT_OPTION
 from oauth2client.service_account import ServiceAccountCredentials
 import httplib2
 from apiclient import discovery
@@ -12,7 +12,7 @@ def get_sheets_service():
     Initializes an authenticated connection to the Google Sheets API
     """
     # authenticate
-    credentials = ServiceAccountCredentials.from_json_keyfile_name(VOLUNTEER_API_KEY, SHEETS_API_SCOPE)
+    credentials = ServiceAccountCredentials.from_json_keyfile_name(SHEETS_API_KEY, SHEETS_API_SCOPE)
     http = credentials.authorize(httplib2.Http())
 
     # grab sheets service
@@ -68,6 +68,17 @@ def push_form_to_sheets(sheet_id, form, field_order, add_ts=True):
         valueInputOption=SHEETS_INPUT_OPTION
     )
     request.execute()
+
+
+def pull_data_from_sheets(sheet_id):
+    """
+    Grab the data from the Google Sheet specified by the given id
+    """
+    sheets = get_sheets_service()
+    request = sheets.values().get(spreadsheetId=sheet_id, range='Sheet1!A2:C')
+    response = request.execute()
+
+    return response['values']
 
 
 def successful_captcha(response):
