@@ -1,13 +1,8 @@
 from django.shortcuts import render, redirect
 from . import forms
-from website.settings import RECAPTCHA_URL, RECAPTCHA_PUBLIC_KEY, RECAPTCHA_PRIVATE_KEY, DEBUG, SHEETS_INPUT_OPTION, VOLUNTEER_API_KEY, SHEETS_API_SCOPE, GOOGLE_DISCOVERY_URL, VOLUNTEER_SPREADSHEET_ID
+from website.settings import RECAPTCHA_URL, RECAPTCHA_PRIVATE_KEY, DEBUG, VOLUNTEER_SPREADSHEET_ID, RECAPTCHA_PUBLIC_KEY
 import requests
-import json
-from datetime import datetime
-import pytz
-from oauth2client.service_account import ServiceAccountCredentials
-import httplib2
-from apiclient import discovery
+from website.shared import utils
 
 key_order = [
     'name',
@@ -19,17 +14,20 @@ key_order = [
     'details'
 ]
 
+
 def index(request):
     """
     Redirects to view for the 'About' page
     """
     return redirect('volunteers:about', permanent=True)
 
+
 def about(request):
     """
     View for the 'About' page
     """
     return render(request, 'volunteers/about.html', {})
+
 
 def contact(request):
     """
@@ -63,7 +61,7 @@ def contact(request):
             }
 
             # add IP, if any could be found
-            ip = _get_client_ip(request)
+            ip = utils.get_client_ip(request)
             if ip is not None:
                 payload['remoteip'] = ip
 
@@ -71,12 +69,12 @@ def contact(request):
             resp = requests.post(RECAPTCHA_URL, data=payload)
 
             # render 'Thanks' on success
-            if _successful_captcha(resp):
+            if utils.successful_captcha(resp):
                 try:
-                    _push_to_sheets(form)
+                    utils.push_form_to_sheets(VOLUNTEER_SPREADSHEET_ID, form, key_order)
                     return redirect('volunteers:thanks')
                 except:
-                    error_message='An unexpected error has occurred'
+                    error_message = 'An unexpected error has occurred'
             else:
                 # else, pass on the error
                 error_message = 'Failed to validate CAPTCHA. Please make sure you check the box below'
@@ -87,51 +85,20 @@ def contact(request):
         resubmit = False
 
     # render response
-    return render(request, 'volunteers/contact.html', {'form': form, 'error_message': error_message, 'resubmit': resubmit})
+    return render(
+        request,
+        'volunteers/contact.html',
+        {
+            'form': form,
+            'RECAPTCHA_PUBLIC_KEY': RECAPTCHA_PUBLIC_KEY,
+            'error_message': error_message,
+            'resubmit': resubmit
+        }
+    )
+
 
 def thanks(request):
     """
     View for the 'Thanks' page
     """
     return render(request, 'volunteers/thanks.html', {})
-
-def _push_to_sheets(form):
-    # import IPython; IPython.embed()
-    credentials = ServiceAccountCredentials.from_json_keyfile_name(VOLUNTEER_API_KEY, SHEETS_API_SCOPE)
-    http = credentials.authorize(httplib2.Http())
-    service = discovery.build('sheets', 'v4', http=http, discoveryServiceUrl=GOOGLE_DISCOVERY_URL)
-    sheets = service.spreadsheets()
-    utc = pytz.timezone('UTC')
-    eastern = pytz.timezone('US/Eastern')
-    dt = utc.localize(datetime.now()).astimezone(eastern).strftime("%Y-%m-%d %H:%M:%S.%s")
-    body = [dt]
-    for key in key_order:
-        body.append(form.data[key])
-    body = {'values':[body]}
-    request = sheets.values().append(spreadsheetId=VOLUNTEER_SPREADSHEET_ID, body=body, range='A:A', valueInputOption=SHEETS_INPUT_OPTION)
-    request.execute()
-
-def _get_client_ip(request):
-    """
-    https://stackoverflow.com/questions/4581789/how-do-i-get-user-ip-address-in-django
-    
-    Attempts to grab the client IP from the request header
-
-    Returns None if IP couldn't be found
-    """
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for is not None:
-        ip = x_forwarded_for.split(',')[0]
-    else:
-        ip = request.META.get('REMOTE_ADDR')
-    return ip
-
-def _successful_captcha(response):
-    """
-    Given an HTTP response from Google, it checks if the CAPTCHA was validated 
-    successfully
-    """
-    if response.status_code == 200:
-        content = json.loads(response.content.decode('utf-8'))
-        return content['success']
-    return False

@@ -1,9 +1,12 @@
 from django.shortcuts import render
-from website.settings import DONATIONS_CSV_PATH, DEBUG
+from website.settings import DONATIONS_CSV_PATH
 import csv
 
 
 def index(request):
+    """
+    Primary view for the Donations page
+    """
     donations = []
     try:
         with open(DONATIONS_CSV_PATH, 'r') as f:

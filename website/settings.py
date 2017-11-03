@@ -123,7 +123,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 RECAPTCHA_URL = 'https://www.google.com/recaptcha/api/siteverify'
-RECAPTCHA_PUBLIC_KEY = '6Lex7TEUAAAAAFFvBC8SWxjwAYh4ft9UC11KRkE4'
 
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True

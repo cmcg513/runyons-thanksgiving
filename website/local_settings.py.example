@@ -1,4 +1,5 @@
 # token used as private key for Google captcha
+RECAPTCHA_PUBLIC_KEY = 'changeme'
 RECAPTCHA_PRIVATE_KEY = 'changeme'
 
 SECRET_KEY = 'changeme'
