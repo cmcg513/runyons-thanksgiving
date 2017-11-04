@@ -43,41 +43,24 @@ def contact(request):
 
     # handle POST
     if request.method == 'POST':
-        if DEBUG:
-            print(request.POST)
-
         # parse form data
         form = forms.ContactForm(request.POST)
 
-        print(form)
+        try:
+            valid_captcha = utils.captcha_is_valid(request)
+        except Exception:
+            error_message = 'An unexpected error has occurred'
+            valid_captcha = False
 
-        # validate form
-        if form.is_valid():
-            # import IPython; IPython.embed()
-            # create payload to send to Google for CAPTCHA validation
-            payload = {
-                'secret': RECAPTCHA_PRIVATE_KEY,
-                'response': request.POST['g-recaptcha-response']
-            }
+        if valid_captcha:
+            # validate form
+            if form.is_valid():
+                utils.push_form_to_sheets(VOLUNTEER_SPREADSHEET_ID, form, key_order)
+                return redirect('volunteers:thanks')
+        else:
+            # else, pass on the error
+            error_message = 'Failed to validate CAPTCHA. Please make sure you check the box above'
 
-            # add IP, if any could be found
-            ip = utils.get_client_ip(request)
-            if ip is not None:
-                payload['remoteip'] = ip
-
-            # pass data to Google
-            resp = requests.post(RECAPTCHA_URL, data=payload)
-
-            # render 'Thanks' on success
-            if utils.successful_captcha(resp):
-                try:
-                    utils.push_form_to_sheets(VOLUNTEER_SPREADSHEET_ID, form, key_order)
-                    return redirect('volunteers:thanks')
-                except Exception:
-                    error_message = 'An unexpected error has occurred'
-            else:
-                # else, pass on the error
-                error_message = 'Failed to validate CAPTCHA. Please make sure you check the box below'
     # handle GET
     else:
         # init blank form

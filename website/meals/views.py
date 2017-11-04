@@ -15,11 +15,11 @@ def index(request):
     # defaults to assuming this is a resubmit
     resubmit = True
 
-    # init blank form
-    form = forms.MealRegistrationForm()
-
     # handle POST
     if request.method == 'POST':
+        # parse form data
+        form = forms.MealRegistrationForm(request.POST)
+
         try:
             valid_captcha = utils.captcha_is_valid(request)
         except Exception:
@@ -27,9 +27,6 @@ def index(request):
             valid_captcha = False
 
         if valid_captcha:
-            # parse form data
-            form = forms.MealRegistrationForm(request.POST)
-
             # validate form
             if form.is_valid():
                 # redirect to Google Form on success
@@ -39,6 +36,8 @@ def index(request):
             error_message = 'Failed to validate CAPTCHA. Please make sure you check the box above'
     # handle GET
     else:
+        # init blank form
+        form = forms.MealRegistrationForm()
         resubmit = False
 
     # render response
