@@ -1,0 +1,22 @@
+body {
+    padding-top: 5rem;
+}
+label {
+    float: left;
+}
+#content {
+    padding: 3rem 1.5rem;
+    text-align: center;
+}
+.g-recaptcha div {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1rem;
+}
+
+.captcha-error {
+    margin-top: .25rem;
+    font-size: .875rem;
+    margin-bottom: 1rem;
+    color: #dc3545;
+}

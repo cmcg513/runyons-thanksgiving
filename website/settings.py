@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'website.basic',
     'website.volunteers',
-    'website.donations'
+    'website.donations',
+    'website.meals'
 ]
 
 MIDDLEWARE = [

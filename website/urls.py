@@ -23,7 +23,7 @@ urlpatterns = [
     url(r'^volunteers/', include('website.volunteers.urls')),
     url(r'^donations/', include('website.donations.urls')),
     # url(r'^login/$', views.login),
-    # url(r'^meals/', include('meals.urls')),
+    url(r'^meals/', include('website.meals.urls')),
 ]
 
 # keep the admin path for debug mode only for now

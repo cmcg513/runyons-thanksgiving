@@ -1,10 +1,31 @@
-from website.settings import SHEETS_API_KEY, SHEETS_API_SCOPE, GOOGLE_DISCOVERY_URL, SHEETS_INPUT_OPTION
+from website.settings import RECAPTCHA_URL, SHEETS_API_KEY, SHEETS_API_SCOPE, GOOGLE_DISCOVERY_URL, SHEETS_INPUT_OPTION, RECAPTCHA_PRIVATE_KEY
 from oauth2client.service_account import ServiceAccountCredentials
 import httplib2
 from apiclient import discovery
 from datetime import datetime
 import pytz
 import json
+import requests
+
+
+def captcha_is_valid(request):
+    """
+    Returns a boolean indicating whether the CAPTCHA was successful
+    """
+    payload = {
+        'secret': RECAPTCHA_PRIVATE_KEY,
+        'response': request.POST['g-recaptcha-response']
+    }
+
+    # add IP, if any could be found
+    ip = get_client_ip(request)
+    if ip is not None:
+        payload['remoteip'] = ip
+
+    # pass data to Google
+        response = requests.post(RECAPTCHA_URL, data=payload)
+
+    return successful_captcha(response)
 
 
 def get_sheets_service():
