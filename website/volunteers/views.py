@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from . import forms
-from website.settings import RECAPTCHA_URL, RECAPTCHA_PRIVATE_KEY, DEBUG, VOLUNTEER_SPREADSHEET_ID, RECAPTCHA_PUBLIC_KEY
-import requests
+from website.settings import VOLUNTEER_SPREADSHEET_ID, RECAPTCHA_PUBLIC_KEY, NO_MORE_VOLUNTEERS
 from website.shared import utils
 
 key_order = [
@@ -35,49 +34,52 @@ def contact(request):
 
     Returns a blank form on GET and accepts form data on POST
     """
-    # default to no error messages
-    error_message = None
-
-    # defaults to assuming this is a resubmit
-    resubmit = True
-
-    # handle POST
-    if request.method == 'POST':
-        # parse form data
-        form = forms.ContactForm(request.POST)
-
-        try:
-            valid_captcha = utils.captcha_is_valid(request)
-        except Exception:
-            error_message = 'An unexpected error has occurred'
-            valid_captcha = False
-
-        if valid_captcha:
-            # validate form
-            if form.is_valid():
-                utils.push_form_to_sheets(VOLUNTEER_SPREADSHEET_ID, form, key_order)
-                return redirect('volunteers:thanks')
-        else:
-            # else, pass on the error
-            error_message = 'Failed to validate CAPTCHA. Please make sure you check the box above'
-
-    # handle GET
+    if NO_MORE_VOLUNTEERS:
+        return render(request, 'volunteers/no_more_volunteers.html', {})
     else:
-        # init blank form
-        form = forms.ContactForm()
-        resubmit = False
+        # default to no error messages
+        error_message = None
 
-    # render response
-    return render(
-        request,
-        'volunteers/contact.html',
-        {
-            'form': form,
-            'RECAPTCHA_PUBLIC_KEY': RECAPTCHA_PUBLIC_KEY,
-            'error_message': error_message,
-            'resubmit': resubmit
-        }
-    )
+        # defaults to assuming this is a resubmit
+        resubmit = True
+
+        # handle POST
+        if request.method == 'POST':
+            # parse form data
+            form = forms.ContactForm(request.POST)
+
+            try:
+                valid_captcha = utils.captcha_is_valid(request)
+            except Exception:
+                error_message = 'An unexpected error has occurred'
+                valid_captcha = False
+
+            if valid_captcha:
+                # validate form
+                if form.is_valid():
+                    utils.push_form_to_sheets(VOLUNTEER_SPREADSHEET_ID, form, key_order)
+                    return redirect('volunteers:thanks')
+            else:
+                # else, pass on the error
+                error_message = 'Failed to validate CAPTCHA. Please make sure you check the box above'
+
+        # handle GET
+        else:
+            # init blank form
+            form = forms.ContactForm()
+            resubmit = False
+
+        # render response
+        return render(
+            request,
+            'volunteers/contact.html',
+            {
+                'form': form,
+                'RECAPTCHA_PUBLIC_KEY': RECAPTCHA_PUBLIC_KEY,
+                'error_message': error_message,
+                'resubmit': resubmit
+            }
+        )
 
 
 def thanks(request):

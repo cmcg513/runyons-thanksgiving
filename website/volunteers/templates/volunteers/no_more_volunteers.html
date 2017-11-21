@@ -1,0 +1,24 @@
+{% extends "basic/base.html" %}
+{% load static %}
+
+{% block custom_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'volunteers/css/contact.css' %}?v=1.0"/>
+{% endblock %}
+
+{% block volunteers_active %}<li class="nav-item dropdown active">{% endblock %}
+
+{% block content %}
+    <h1>Thank you!</h1>
+    <p>
+        Thank you so much for your interest and generosity! However, we are currently formalizing our volunteer
+        schedule and can unfortunately no longer accept online registrations.
+    </p>
+    <p>
+        While we might not be able to add you as a volunteer this year, if you still feel like contributing to this
+        event, we will be accepting <a href="{% url 'donations:index' %}">donations</a> until the day before Thanksgiving. We are keeping an updated list of the
+        items we need <a href="{% url 'donations:index' %}">here</a>. Any surplus we have after the event will be donated to local food banks and charities.
+    </p>
+    <p>
+        Thank you again and Happy Thanksgiving!
+    </p>
+{% endblock %}
