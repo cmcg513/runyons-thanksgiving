@@ -1,8 +1,9 @@
 # from django.contrib.auth import authenticate
 from django.shortcuts import render
+from website.settings import EVENT_YEAR
 
 def index(request):
-    return render(request, 'basic/index.html', {})
+    return render(request, 'basic/index.html', {'EVENT_YEAR': EVENT_YEAR})
 
 # def login(request):
 #     user = authenticate(
