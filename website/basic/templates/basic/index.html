@@ -9,15 +9,28 @@
 
 {% block content %}
 <h1>Runyon's Thanksgiving Meal Drive</h1>
-<p class="lead">
+{% if DONE_FOR_THE_YEAR %}
+  <p class="lead">
+    Thanks to all of our volunteers and donators!
+  </p>
+  <p>
+    Thank you all for another wonderful Thanksgiving! Feel free to check back with us again later on
+    in {{ next_year }}.
+  </p>
+  <p>
+    Happy Holidays!
+  </p>
+{% else %}
+  <p class="lead">
   Welcome to the landing page for the {{ EVENT_YEAR }} Thanksgiving Meal Drive!
-</p>
-<p>
-  For those interested in donating Thanksgiving fixings, please refer to the
-  <a href="{% url 'donations:index' %}">Donations</a> tab above. Potential volunteers should refer to the
-  <a href="{% url 'volunteers:index' %}">Volunteers</a> tab. Those registering clients to receive meals, please use the
-  <a href="{% url 'meals:index' %}">Meals</a> tab. 
-</p>
+  </p>
+  <p>
+    For those interested in donating Thanksgiving fixings, please refer to the
+    <a href="{% url 'donations:index' %}">Donations</a> tab above. Potential volunteers should refer to the
+    <a href="{% url 'volunteers:index' %}">Volunteers</a> tab. Those registering clients to receive meals, please use the
+    <a href="{% url 'meals:index' %}">Meals</a> tab.
+  </p>
+{% endif %}
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
   <ol class="carousel-indicators">
     <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
