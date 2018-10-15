@@ -1,6 +1,11 @@
 from django.shortcuts import render, redirect
 from . import forms
-from website.settings import CLIENT_REGISTRATION_URL, RECAPTCHA_PUBLIC_KEY, NO_MORE_CLIENTS
+from website.settings import \
+    CLIENT_REGISTRATION_URL, \
+    RECAPTCHA_PUBLIC_KEY, \
+    NO_MORE_CLIENTS, \
+    CLIENT_REGISTRATION_FORTHCOMING, \
+    CLIENT_REGISTRATION_START_DATE
 from website.shared import utils
 
 
@@ -51,6 +56,8 @@ def index(request):
                 'form': form,
                 'RECAPTCHA_PUBLIC_KEY': RECAPTCHA_PUBLIC_KEY,
                 'error_message': error_message,
-                'resubmit': resubmit
+                'resubmit': resubmit,
+                'CLIENT_REGISTRATION_FORTHCOMING': CLIENT_REGISTRATION_FORTHCOMING,
+                'CLIENT_REGISTRATION_START_DATE': CLIENT_REGISTRATION_START_DATE
             }
         )
