@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from . import forms
 from website.settings import \
-    CLIENT_REGISTRATION_URL, \
     RECAPTCHA_PUBLIC_KEY, \
     NO_MORE_CLIENTS, \
     CLIENT_REGISTRATION_FORTHCOMING, \
@@ -9,8 +8,17 @@ from website.settings import \
 from website.shared import utils
 
 
-
 def index(request):
+    """
+    Redirects to view for the password wall for registration
+    """
+    if 'wall_validated' in request.session and request.session['wall_validated']:
+        return redirect('meals:account')
+    else:
+        return redirect('meals:wall')
+
+
+def wall(request):
     """
     Primary view for the Meals page
     """
@@ -37,8 +45,9 @@ def index(request):
             if valid_captcha:
                 # validate form
                 if form.is_valid():
-                    # redirect to Google Form on success
-                    return redirect(CLIENT_REGISTRATION_URL)
+                    # set session var and redirect to registration on success
+                    request.session['wall_validated'] = True
+                    return redirect('meals:account')
             else:
                 # else, pass on the error
                 error_message = 'Failed to validate CAPTCHA. Please make sure you check the box above'
@@ -51,7 +60,7 @@ def index(request):
         # render response
         return render(
             request,
-            'meals/index.html',
+            'meals/wall.html',
             {
                 'form': form,
                 'RECAPTCHA_PUBLIC_KEY': RECAPTCHA_PUBLIC_KEY,
@@ -61,3 +70,20 @@ def index(request):
                 'CLIENT_REGISTRATION_START_DATE': CLIENT_REGISTRATION_START_DATE
             }
         )
+
+
+def account(request):
+    """
+    View for registering new accounts
+    """
+    if 'wall_validated' in request.session and request.session['wall_validated']:
+        return render(request, 'meals/account.html')
+    else:
+        return redirect('meals:wall')
+
+
+def registration(request):
+    """
+    View for registering meal recipients
+    """
+    return render(request, 'meals/registration.html')
