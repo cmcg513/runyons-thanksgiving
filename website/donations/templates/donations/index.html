@@ -8,6 +8,11 @@
 {% block donations_active %}<li class="nav-item dropdown active">{% endblock %}
 
 {% block content %}
+    {% if WAIT_BEFORE_DONATING %}
+    <div class="alert alert-info" role="alert">
+        <span class="font-weight-bold"> Please note, </span> due to storage constraints, we plan to begin accepting donations on <span class="font-weight-bold"> {{ DONATE_START_DATE }} </span>.
+    </div>
+    {% endif %}
     <h1>Donations</h1>
     <p>
         Thanks you for your interest in donating!

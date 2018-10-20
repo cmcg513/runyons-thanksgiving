@@ -2,6 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from phonenumbers import parse, NumberParseException
 
+
 class PhoneField(forms.CharField):
     """
     Django form field to validate and parse phone numbers for the US
@@ -13,10 +14,10 @@ class PhoneField(forms.CharField):
         """
 
         super(PhoneField, self).__init__(
-            max_length,
-            min_length,
-            strip,
-            empty_value,
+            max_length=max_length,
+            min_length=min_length,
+            strip=strip,
+            empty_value=empty_value,
             *args,
             **kwargs)
 

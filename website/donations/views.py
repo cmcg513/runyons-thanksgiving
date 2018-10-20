@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from website.settings import DONATIONS_SPREADSHEET_ID
+from website.settings import DONATIONS_SPREADSHEET_ID, WAIT_BEFORE_DONATING, DONATE_START_DATE
 from website.shared import utils
 
 
@@ -28,4 +28,9 @@ def index(request):
     else:
         error_msg = None
 
-    return render(request, 'donations/index.html', {'donations': donations, 'error_msg': error_msg})
+    return render(request, 'donations/index.html', {
+        'donations': donations,
+        'error_msg': error_msg,
+        'WAIT_BEFORE_DONATING': WAIT_BEFORE_DONATING,
+        'DONATE_START_DATE': DONATE_START_DATE
+    })
