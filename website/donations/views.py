@@ -22,7 +22,7 @@ def index(request):
     except Exception:
         pass
 
-    if len(donations) == 0:
+    if len(donations) == 0 and not WAIT_BEFORE_DONATING:
         error_msg = "Unfortunately, it looks like something went wrong loading the list of items... " \
                     "Check back with us later :)"
     else:

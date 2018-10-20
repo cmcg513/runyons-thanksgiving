@@ -9,12 +9,11 @@ from website.settings import \
 from website.shared import utils
 
 
-
 def index(request):
     """
     Primary view for the Meals page
     """
-    if NO_MORE_CLIENTS:
+    if NO_MORE_CLIENTS or CLIENT_REGISTRATION_FORTHCOMING:
         return render(request, 'meals/no_more_clients.html', {})
     else:
         # default to no error messages
