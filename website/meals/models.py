@@ -11,6 +11,7 @@ class Registrar(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     organization = models.CharField(max_length=100)
     registration_count = models.IntegerField(default=0)
+    phone = models.CharField(max_length=10)
 
 
 @receiver(post_save, sender=User)

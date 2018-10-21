@@ -96,4 +96,4 @@ class RegistrationForm(forms.Form):
         required=True,
         validators=[validate_meal_count]
     )
-    notes = forms.CharField(required=False)
+    details = forms.CharField(required=False)

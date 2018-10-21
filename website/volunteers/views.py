@@ -57,7 +57,7 @@ def contact(request):
             if valid_captcha:
                 # validate form
                 if form.is_valid():
-                    utils.push_form_to_sheets(VOLUNTEER_SPREADSHEET_ID, form, key_order)
+                    utils.push_form_to_sheets(VOLUNTEER_SPREADSHEET_ID, key_order, form=form)
                     return redirect('volunteers:thanks')
             else:
                 # else, pass on the error

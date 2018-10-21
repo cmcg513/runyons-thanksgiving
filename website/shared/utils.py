@@ -65,10 +65,13 @@ def get_formatted_datetime():
     return dt
 
 
-def form_to_sheets_append_body(form, field_order, add_ts):
+def form_to_sheets_append_body(field_order, add_ts, form=None, mock_form=None):
     """
     Parse the fields of a form object into a Sheets API compatible body, adding in a timestamp if requested
     """
+    if form is None and mock_form is None:
+        raise ValueError('Both form and mock_form can\'t be None')
+
     if add_ts:
         # get dt string
         dt = get_formatted_datetime()
@@ -77,19 +80,23 @@ def form_to_sheets_append_body(form, field_order, add_ts):
         body = []
 
     # setup the values to append to the sheet
-    for key in field_order:
-        body.append(form.data[key])
+    if form:
+        for key in field_order:
+            body.append(form.data[key])
+    elif mock_form:
+        for key in field_order:
+            body.append(mock_form[key])
     body = {'values': [body]}
 
     return body
 
 
-def push_form_to_sheets(sheet_id, form, field_order, add_ts=True):
+def push_form_to_sheets(sheet_id, field_order, form=None, mock_form=None, add_ts=True):
     """
     Append the data from a form to the Google Sheet specified by the given id
     """
     sheets = get_sheets_service()
-    body = form_to_sheets_append_body(form, field_order, add_ts)
+    body = form_to_sheets_append_body(field_order, add_ts, form=form, mock_form=mock_form)
 
     # create and execute the API request
     request = sheets.values().append(

@@ -7,10 +7,27 @@ from website.settings import \
     CLIENT_REGISTRATION_START_DATE
 from website.shared import utils
 import time
-from website.settings import SHARED_PASSWORD
+from website.settings import SHARED_PASSWORD, MEALS_SPREADSHEET_ID
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import PermissionDenied
+
+key_order = [
+    'user_organization',
+    'user_first_name',
+    'user_last_name',
+    'user_phone',
+    'user_email',
+    'first_name',
+    'last_name',
+    'phone',
+    'town',
+    'zip_code',
+    'address',
+    'unit',
+    'meal_count',
+    'details'
+]
 
 
 def index(request):
@@ -171,8 +188,10 @@ def registration(request):
                 if valid_captcha:
                     # validate form
                     if form.is_valid():
-                        # push data to spreadsheet
-                        # push data
+                        # mock form and push data to spreadsheet
+                        mock_form = join_form_and_user(form, request.user)
+                        utils.push_form_to_sheets(MEALS_SPREADSHEET_ID, key_order, mock_form=mock_form)
+
                         # update registration_count
                         request.user.registrar.registration_count += 1
                         request.user.registrar.save()
@@ -312,4 +331,29 @@ def create_user(form):
         password=form.cleaned_data['password']
     )
     user.registrar.organization = form.cleaned_data['organization']
+    user.registrar.phone = form.cleaned_data['phone']
     user.registrar.save()
+
+
+def join_form_and_user(form, user):
+    """
+    Given a registration form and user, creates a new mock form
+    """
+    mock_form = {}
+    mock_form['user_organization'] = user.registrar.organization
+    mock_form['user_first_name'] = user.first_name
+    mock_form['user_last_name'] = user.last_name
+    mock_form['user_phone'] = user.registrar.phone
+    mock_form['user_email'] = user.email
+    mock_form['first_name'] = form.data['first_name']
+    mock_form['last_name'] = form.data['last_name']
+    mock_form['phone'] = form.data['phone']
+    mock_form['town'] = form.data['town']
+    mock_form['zip_code'] = form.data['zip_code']
+    mock_form['address'] = form.data['address']
+    mock_form['unit'] = form.data['unit']
+    mock_form['meal_count'] = form.data['meal_count']
+    mock_form['details'] = form.data['details']
+    return mock_form
+
+
