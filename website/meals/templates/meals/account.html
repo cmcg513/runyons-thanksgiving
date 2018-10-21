@@ -1,0 +1,139 @@
+{% extends "basic/base.html" %}
+{% load static %}
+
+{% block custom_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'meals/css/style.css' %}?v=1.0"/>
+{% endblock %}
+
+{% block meals_active %}<li class="nav-item dropdown active">{% endblock %}
+
+{% block content %}
+    <h1>Account Setup</h1>
+    <p>
+        Please enter your information below. Be sure to use a strong and memorable password.
+    </p>
+    <form id="account_setup_form" action="" method="post" novalidate>
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label class="form-control-label" for="id_organization">Organization Name:</label>
+                <input type="text" name="organization" id="id_organization" class="form-control
+                {% if resubmit %}
+                    {% if form.organization.errors %}
+                        is-invalid
+                    {% else %}
+                        is-valid
+                    {% endif %}
+                {% endif %}" placeholder="Organization" {% if form.organization.value != None %} value="{{ form.organization.value }}" {% endif %} required />
+                {% if form.organization.errors %}
+                {% for error in form.organization.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+                {% endif %}
+            </div>
+            <div class="form-group col-md-4">
+                <label class="form-control-label" for="id_first_name">First Name:</label>
+                <input type="text" name="first_name" id="id_first_name" class="form-control
+                {% if resubmit %}
+                    {% if form.first_name.errors %}
+                        is-invalid
+                    {% else %}
+                        is-valid
+                    {% endif %}
+                {% endif %}" placeholder="John" {% if form.first_name.value != None %} value="{{ form.first_name.value }}" {% endif %} required />
+                {% if form.first_name.errors %}
+                {% for error in form.first_name.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+                {% endif %}
+            </div>
+            <div class="form-group col-md-4">
+                <label class="form-control-label" for="id_last_name">Last Name:</label>
+                <input type="text" name="last_name" id="id_last_name" class="form-control
+                {% if resubmit %}
+                    {% if form.last_name.errors %}
+                        is-invalid
+                    {% else %}
+                        is-valid
+                    {% endif %}
+                {% endif %}" placeholder="Smith" {% if form.last_name.value != None %} value="{{ form.last_name.value }}" {% endif %} required />
+                {% if form.last_name.errors %}
+                {% for error in form.last_name.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label class="form-control-label" for="id_email">Email:</label>
+                <input type="email" name="email" id="id_email" class="form-control
+                {% if resubmit %}
+                    {% if form.email.errors %}
+                        is-invalid
+                    {% else %}
+                        is-valid
+                    {% endif %}
+                {% endif %}" placeholder="name@example.com" {% if form.email.value != None %} value="{{ form.email.value }}" {% endif %} required />
+                {% if form.email.errors %}
+                {% for error in form.email.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+                {% endif %}
+            </div>
+            <div class="form-group col-md-6">
+                <label for="id_phone">Phone:</label>
+                <input type="text" name="phone" id="id_phone" class="form-control
+                {% if resubmit %}
+                    {% if form.phone.errors %}
+                        is-invalid
+                    {% else %}
+                        is-valid
+                    {% endif %}
+                {% endif %}" placeholder="(555) 555-5555" {% if form.phone.value != None %} value="{{ form.phone.value }}" {% endif %} required />
+                {% if form.phone.errors %}
+                {% for error in form.phone.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label class="form-control-label" for="id_password">Set a New Password:</label>
+                <input type="password" name="password" id="id_password" class="form-control
+                {% if resubmit %}
+                    {% if form.password.errors %}
+                        is-invalid
+                    {% endif %}
+                {% endif %}" placeholder="********" required />
+                <small id="id_password_help" class="form-text text-muted">Passwords must be at least 8 characters and contain a mix of upper and lowercase letters, numbers, and symbols.</small>
+                {% if form.password.errors %}
+                {% for error in form.password.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+                {% endif %}
+            </div>
+            <div class="form-group col-md-6">
+                <label class="form-control-label" for="id_password_confirmation">Confirm Password:</label>
+                <input type="password" name="password_confirmation" id="id_password_confirmation" class="form-control
+                {% if resubmit %}
+                    {% if form.password_confirmation.errors %}
+                        is-invalid
+                    {% endif %}
+                {% endif %}" placeholder="********" required />
+                {% if form.password_confirmation.errors %}
+                {% for error in form.password_confirmation.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="g-recaptcha" data-sitekey="{{ RECAPTCHA_PUBLIC_KEY }}"></div>
+        {% if error_message %}
+        <div class="captcha-error">{{ error_message }}</div>
+        {% endif %}
+        <input type="submit" class="btn btn-primary" value="Submit" />
+    </form>
+{% endblock %}

@@ -3,5 +3,11 @@ from . import views
 
 app_name = 'meals'
 urlpatterns = [
-    url(r'^$', views.index, name='index')
+    url(r'^$', views.index, name='index'),
+    url(r'^wall/$', views.wall, name='wall'),
+    url(r'^account/$', views.account, name='account'),
+    url(r'^registration/$', views.registration, name='registration'),
+    url(r'^login/$', views.login_view, name='login'),
+    url(r'^logout/$', views.logout_view, name='logout')
+
 ]

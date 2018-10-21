@@ -1,7 +1,11 @@
 from django import forms
 from website.basic.forms import PhoneField
 
+
 class ContactForm(forms.Form):
+    """
+    Volunteer contact form
+    """
     name = forms.CharField(required=True)
     email = forms.EmailField(required=True)
     phone = PhoneField(required=True)

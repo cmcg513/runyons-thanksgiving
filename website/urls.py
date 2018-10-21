@@ -15,17 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from website.settings import DEBUG
 
 urlpatterns = [
-    # url(r'^admin/', admin.site.urls),
+    url(r'^damon/', admin.site.urls),
     url(r'^', include('website.basic.urls')),
     url(r'^volunteers/', include('website.volunteers.urls')),
     url(r'^donations/', include('website.donations.urls')),
     # url(r'^login/$', views.login),
     url(r'^meals/', include('website.meals.urls')),
 ]
-
-# keep the admin path for debug mode only for now
-if DEBUG:
-    urlpatterns.append(url(r'^admin/', admin.site.urls))
