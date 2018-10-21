@@ -16,7 +16,7 @@
     <h1>Login for Meal Registration</h1>
     <form id="login_form" action="" method="post" novalidate>
         {% csrf_token %}
-        <div class="form-row">
+        <div class="form-row form-group">
             <label class="form-control-label" for="id_email">Email:</label>
             <input type="text" name="email" id="id_email" class="form-control
             {% if resubmit %}
@@ -32,7 +32,7 @@
             {% endfor %}
             {% endif %}
         </div>
-        <div class="form-row">
+        <div class="form-row form-group">
             <label class="form-control-label" for="id_password">Password:</label>
             <input type="password" name="password" id="id_password" class="form-control
             {% if resubmit %}
