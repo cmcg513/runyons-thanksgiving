@@ -173,6 +173,8 @@ def registration(request):
                     if form.is_valid():
                         # push data to spreadsheet
                         # push data
+                        request.user.registrar.registration_count += 1
+                        request.user.registrar.save()
                         request.session['registration_complete'] = int(time.time())
                         return redirect('meals:registration')
                 else:
