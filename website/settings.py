@@ -90,10 +90,10 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': 8,
+        }
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
@@ -132,8 +132,6 @@ X_FRAME_OPTIONS = 'DENY'
 SHEETS_API_SCOPE = ['https://www.googleapis.com/auth/spreadsheets']
 GOOGLE_DISCOVERY_URL = ('https://sheets.googleapis.com/$discovery/rest?version=v4')
 SHEETS_INPUT_OPTION = 'RAW'
-
-PASSWORD_MIN_LENGTH = 8
 
 # Import local_settings
 try:

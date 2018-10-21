@@ -1,18 +1,16 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from website.settings import PASSWORD_MIN_LENGTH
 from website.basic.forms import PhoneField
 import string
 from website.shared import utils
+import django.contrib.auth.password_validation
 
 
 def validate_password(password):
     """
     Validates password complexity
     """
-    if len(password) < PASSWORD_MIN_LENGTH:
-        raise ValidationError('Password must be at least 8 characters')
-    elif not utils.chars_in_string(string.ascii_lowercase, password):
+    if not utils.chars_in_string(string.ascii_lowercase, password):
         raise ValidationError('Password must contain lowercase characters')
     elif not utils.chars_in_string(string.ascii_uppercase, password):
         raise ValidationError('Password must contain uppercase characters')
@@ -40,7 +38,7 @@ class AccountSetupForm(forms.Form):
     phone = PhoneField(required=True)
     password = forms.CharField(
         required=True,
-        validators=[validate_password]
+        validators=[django.contrib.auth.password_validation.validate_password, validate_password]
     )
     password_confirmation = forms.CharField(required=True)
 
