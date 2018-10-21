@@ -31,6 +31,8 @@ def wall(request):
     """
     if NO_MORE_CLIENTS:
         return render(request, 'meals/no_more_clients.html', {})
+    elif 'wall_validated' in request.session and request.session['wall_validated']:
+        return redirect('meals:account')
     else:
         # default to no error messages
         captcha_error = None
