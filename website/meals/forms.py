@@ -20,6 +20,22 @@ def validate_password(password):
         raise ValidationError('Password must contain a symbol')
 
 
+def validate_meal_count(meal_count):
+    """
+    Validates meal count
+    """
+    if meal_count <= 0:
+        raise ValidationError('Please enter a quantity greater than 0')
+
+
+def validate_zip_code(zip_code):
+    """
+    Validates zip code
+    """
+    if not zip_code.isnumeric():
+        raise ValidationError('Please enter numbers only')
+
+
 class AuthWallForm(forms.Form):
     """
     Simple form for the password wall for user account setup
@@ -58,3 +74,26 @@ class LoginForm(forms.Form):
     """
     email = forms.EmailField(required=True)
     password = forms.CharField(required=True)
+
+
+class RegistrationForm(forms.Form):
+    """
+    Meal registration form
+    """
+    first_name = forms.CharField(required=True)
+    last_name = forms.CharField(required=True)
+    phone = PhoneField(required=True)
+    town = forms.CharField(required=True)
+    zip_code = forms.CharField(
+        required=True,
+        max_length=5,
+        min_length=5,
+        validators=[validate_zip_code]
+    )
+    address = forms.CharField(required=True)
+    unit = forms.CharField(required=False)
+    meal_count = forms.IntegerField(
+        required=True,
+        validators=[validate_meal_count]
+    )
+    notes = forms.CharField(required=False)
