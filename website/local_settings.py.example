@@ -2,6 +2,10 @@
 RECAPTCHA_PUBLIC_KEY = 'changeme'
 RECAPTCHA_PRIVATE_KEY = 'changeme'
 
+# RECAPTCHA keys for debugging
+# RECAPTCHA_PUBLIC_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
+# RECAPTCHA_PRIVATE_KEY = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'
+
 SECRET_KEY = 'changeme'
 
 DEBUG = False
@@ -18,13 +22,14 @@ VOLUNTEER_SPREADSHEET_ID = 'changeme'
 # id of the donations spreadsheet
 DONATIONS_SPREADSHEET_ID = 'changeme'
 
+# id of the meals spreadsheet
+MEALS_SPREADSHEET_ID = 'changeme'
+
 # path to Google Sheets API key
 SHEETS_API_KEY = 'changeme'
 
 SECURE_HSTS_SECONDS = 3600
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-
-CLIENT_REGISTRATION_URL = 'changeme'
 
 SHARED_PASSWORD = 'changeme'
 

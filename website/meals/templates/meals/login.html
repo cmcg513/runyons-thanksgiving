@@ -1,0 +1,69 @@
+{% extends "basic/base.html" %}
+{% load static %}
+
+{% block custom_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'meals/css/style.css' %}?v=1.0"/>
+{% endblock %}
+
+{% block meals_active %}<li class="nav-item dropdown active">{% endblock %}
+
+{% block content %}
+    {% if recent_account_creation %}
+    <div class="alert alert-info" role="alert">
+        User account created successfully! Please login to begin registering meal recipients
+    </div>
+    {% endif %}
+    {% if recent_logout %}
+    <div class="alert alert-info" role="alert">
+        Successfully logged out!
+    </div>
+    {% endif %}
+    {% if invalid_login %}
+    <div class="alert alert-warning" role="alert">
+        Please contact <a href="mailto:info@runyons.com">info@runyons.com</a> if you are having difficulty logging in.
+    </div>
+    {% endif %}
+    <h1>Login for Meal Registration</h1>
+    <form id="login_form" action="" method="post" novalidate>
+        {% csrf_token %}
+        <div class="form-row form-group">
+            <label class="form-control-label" for="id_email">Email:</label>
+            <input type="text" name="email" id="id_email" class="form-control
+            {% if resubmit %}
+                {% if form.email.errors or invalid_login %}
+                    is-invalid
+                {% else %}
+                    is-valid
+                {% endif %}
+            {% endif %}" placeholder="name@example.com" {% if form.email.value != None %} value="{{ form.email.value }}" {% endif %} required />
+            {% if form.email.errors %}
+            {% for error in form.email.errors %}
+            <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+            {% endif %}
+        </div>
+        <div class="form-row form-group">
+            <label class="form-control-label" for="id_password">Password:</label>
+            <input type="password" name="password" id="id_password" class="form-control
+            {% if resubmit %}
+                {% if form.password.errors or invalid_login %}
+                    is-invalid
+                {% endif %}
+            {% endif %}" placeholder="********" required />
+            {% if form.password.errors %}
+            {% for error in form.password.errors %}
+            <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+            {% endif %}
+            {% if invalid_login %}
+            <div class="invalid-feedback">Incorrect email or password</div>
+            {% endif %}
+        </div>
+
+        <div class="g-recaptcha" data-sitekey="{{ RECAPTCHA_PUBLIC_KEY }}"></div>
+        {% if error_message %}
+        <div class="captcha-error">{{ error_message }}</div>
+        {% endif %}
+        <input type="submit" class="btn btn-primary" value="Submit" />
+</form>
+{% endblock %}

@@ -1,0 +1,183 @@
+{% extends "basic/base.html" %}
+{% load static %}
+
+{% block custom_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'meals/css/style.css' %}?v=1.0"/>
+{% endblock %}
+
+{% block meals_active %}<li class="nav-item dropdown active">{% endblock %}
+
+{% block content %}
+    {% if recent_registration %}
+    <div class="alert alert-info" role="alert">
+        Recipient registered! You can register another below
+    </div>
+    {% endif %}
+    <h1>Thanksgiving Meal Recipient Registration</h1>
+    <p>
+        Enter the recipient's information below.
+    </p>
+    <form id="registration_form" action="" method="post" novalidate>
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label class="form-control-label" for="id_first_name">Recipient's First Name:</label>
+                <input type="text" name="first_name" id="id_first_name" class="form-control
+                {% if resubmit %}
+                    {% if form.first_name.errors %}
+                        is-invalid
+                    {% else %}
+                        is-valid
+                    {% endif %}
+                {% endif %}" placeholder="John" {% if form.first_name.value != None %} value="{{ form.first_name.value }}" {% endif %} required />
+                {% if form.first_name.errors %}
+                {% for error in form.first_name.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+                {% endif %}
+
+            </div>
+            <div class="form-group col-md-6">
+                <label class="form-control-label" for="id_last_name">Recipient's Last Name:</label>
+                <input type="text" name="last_name" id="id_last_name" class="form-control
+                {% if resubmit %}
+                    {% if form.last_name.errors %}
+                        is-invalid
+                    {% else %}
+                        is-valid
+                    {% endif %}
+                {% endif %}" placeholder="Smith" {% if form.last_name.value != None %} value="{{ form.last_name.value }}" {% endif %} required />
+                {% if form.last_name.errors %}
+                {% for error in form.last_name.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="id_meal_count">Number of meals:</label>
+                <input type="number" name="meal_count" id="id_meal_count" class="form-control
+                {% if resubmit %}
+                    {% if form.meal_count.errors %}
+                        is-invalid
+                    {% else %}
+                        is-valid
+                    {% endif %}
+                {% endif %}" {% if form.meal_count.value != None %} value="{{ form.meal_count.value }}" {% endif %} required />
+                {% if form.meal_count.errors %}
+                {% for error in form.meal_count.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+                {% endif %}
+            </div>
+            <div class="form-group col-md-6">
+                <label for="id_phone">Phone:</label>
+                <input type="text" name="phone" id="id_phone" class="form-control
+                {% if resubmit %}
+                    {% if form.phone.errors %}
+                        is-invalid
+                    {% else %}
+                        is-valid
+                    {% endif %}
+                {% endif %}" placeholder="(555) 555-5555" {% if form.phone.value != None %} value="{{ form.phone.value }}" {% endif %} required />
+                {% if form.phone.errors %}
+                {% for error in form.phone.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label class="form-control-label" for="id_address">Street Address:</label>
+                <input type="text" name="address" id="id_address" class="form-control
+                {% if resubmit %}
+                    {% if form.address.errors %}
+                        is-invalid
+                    {% else %}
+                        is-valid
+                    {% endif %}
+                {% endif %}" placeholder="123 Apple Way" {% if form.address.value != None %} value="{{ form.address.value }}" {% endif %} required />
+                {% if form.address.errors %}
+                {% for error in form.address.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+                {% endif %}
+
+            </div>
+            <div class="form-group col-md-6">
+                <label class="form-control-label" for="id_unit">Apt#, Bldg#, etc.:</label>
+                <input type="text" name="unit" id="id_unit" class="form-control
+                {% if resubmit %}
+                    {% if form.unit.errors %}
+                        is-invalid
+                    {% else %}
+                        is-valid
+                    {% endif %}
+                {% endif %}" placeholder="123" {% if form.unit.value != None %} value="{{ form.unit.value }}" {% endif %} required />
+                {% if form.unit.errors %}
+                {% for error in form.unit.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label class="form-control-label" for="id_town">Town:</label>
+                <input type="text" name="town" id="id_town" class="form-control
+                {% if resubmit %}
+                    {% if form.town.errors %}
+                        is-invalid
+                    {% else %}
+                        is-valid
+                    {% endif %}
+                {% endif %}" placeholder="Mayberry" {% if form.town.value != None %} value="{{ form.town.value }}" {% endif %} required />
+                {% if form.town.errors %}
+                {% for error in form.town.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+                {% endif %}
+            </div>
+            <div class="form-group col-md-6">
+                <label class="form-control-label" for="id_zip_code">Zip Code:</label>
+                <input type="text" name="zip_code" id="id_zip_code" class="form-control
+                {% if resubmit %}
+                    {% if form.zip_code.errors %}
+                        is-invalid
+                    {% else %}
+                        is-valid
+                    {% endif %}
+                {% endif %}" placeholder="12345" {% if form.zip_code.value != None %} value="{{ form.zip_code.value }}" {% endif %} required />
+                {% if form.zip_code.errors %}
+                {% for error in form.zip_code.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="id_details">Additional details:</label>
+            <textarea name="details" placeholder="Enter any additional details or instructions here..." id="id_details" cols="50" rows="5" class="form-control
+                {% if resubmit %}
+                    {% if form.details.errors %}
+                        is-invalid
+                    {% else %}
+                        is-valid
+                    {% endif %}
+                {% endif %}">{% if form.details.value != None %}{{ form.details.value }}{% endif %}</textarea>
+            {% if form.details.errors %}
+            {% for error in form.details.errors %}
+            <div class="invalid-feedback">{{ error }}</div>
+            {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class="g-recaptcha" data-sitekey="{{ RECAPTCHA_PUBLIC_KEY }}"></div>
+        {% if error_message %}
+        <div class="captcha-error">{{ error_message }}</div>
+        {% endif %}
+        <input type="submit" class="btn btn-primary" value="Submit" />
+    </form>
+{% endblock %}
