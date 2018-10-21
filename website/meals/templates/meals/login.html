@@ -13,6 +13,11 @@
         User account created successfully! Please login to begin registering meal recipients
     </div>
     {% endif %}
+    {% if invalid_login %}
+    <div class="alert alert-warning" role="alert">
+        Please contact <a href="mailto:info@runyons.com">info@runyons.com</a> if you are having difficulty logging in.
+    </div>
+    {% endif %}
     <h1>Login for Meal Registration</h1>
     <form id="login_form" action="" method="post" novalidate>
         {% csrf_token %}
@@ -20,7 +25,7 @@
             <label class="form-control-label" for="id_email">Email:</label>
             <input type="text" name="email" id="id_email" class="form-control
             {% if resubmit %}
-                {% if form.email.errors %}
+                {% if form.email.errors or invalid_login %}
                     is-invalid
                 {% else %}
                     is-valid
@@ -36,7 +41,7 @@
             <label class="form-control-label" for="id_password">Password:</label>
             <input type="password" name="password" id="id_password" class="form-control
             {% if resubmit %}
-                {% if form.password.errors %}
+                {% if form.password.errors or invalid_login %}
                     is-invalid
                 {% endif %}
             {% endif %}" placeholder="********" required />
@@ -44,6 +49,9 @@
             {% for error in form.password.errors %}
             <div class="invalid-feedback">{{ error }}</div>
             {% endfor %}
+            {% endif %}
+            {% if invalid_login %}
+            <div class="invalid-feedback">Incorrect email or password</div>
             {% endif %}
         </div>
 

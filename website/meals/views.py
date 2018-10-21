@@ -9,6 +9,8 @@ from website.shared import utils
 import time
 from website.settings import SHARED_PASSWORD
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
+from django.core.exceptions import PermissionDenied
 
 
 def index(request):
@@ -134,17 +136,20 @@ def account(request):
             }
         )
     else:
-        return redirect('meals:wall')
+        raise PermissionDenied
 
 
 def registration(request):
     """
     View for registering meal recipients
     """
-    return render(request, 'meals/registration.html')
+    if request.user.is_authenticated:
+        return render(request, 'meals/registration.html')
+    else:
+        raise PermissionDenied
 
 
-def login(request):
+def login_view(request):
     """
     View for logging in
     """
@@ -152,7 +157,8 @@ def login(request):
         return render(request, 'meals/no_more_clients.html', {})
     else:
         # default to no error messages
-        error_message = None
+        captcha_error = None
+        invalid_login = None
 
         # defaults to assuming this is a resubmit
         resubmit = True
@@ -165,17 +171,22 @@ def login(request):
             try:
                 valid_captcha = utils.captcha_is_valid(request)
             except Exception:
-                error_message = 'An unexpected error has occurred'
+                captcha_error = 'An unexpected error has occurred'
                 valid_captcha = False
 
             if valid_captcha:
                 # validate form
                 if form.is_valid():
-                    # set session var and redirect to registration on success
-                    return redirect('meals:registration')
+                    # authenticate, login and redirect
+                    user = authenticate(username=form.cleaned_data['email'], password=form.cleaned_data['password'])
+                    if user is not None:
+                        login(request=request, user=user)
+                        return redirect('meals:registration')
+                    else:
+                        invalid_login = True
             else:
                 # else, pass on the error
-                error_message = 'Failed to validate CAPTCHA. Please make sure you check the box above'
+                captcha_error = 'Failed to validate CAPTCHA. Please make sure you check the box above'
         # handle GET
         else:
             # init blank form
@@ -194,9 +205,10 @@ def login(request):
             {
                 'form': form,
                 'RECAPTCHA_PUBLIC_KEY': RECAPTCHA_PUBLIC_KEY,
-                'error_message': error_message,
+                'error_message': captcha_error,
                 'resubmit': resubmit,
-                'recent_account_creation': recent_account_creation
+                'recent_account_creation': recent_account_creation,
+                'invalid_login': invalid_login
             }
         )
 
