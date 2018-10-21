@@ -31,7 +31,7 @@
             <label class="form-control-label" for="id_password">Password:</label>
             <input type="password" name="password" id="id_password" class="form-control
             {% if resubmit %}
-                {% if form.password.errors %}
+                {% if form.password.errors or password_error %}
                     is-invalid
                 {% endif %}
             {% endif %}" placeholder="********" required />
@@ -40,12 +40,15 @@
             <div class="invalid-feedback">{{ error }}</div>
             {% endfor %}
             {% endif %}
+            {% if password_error %}
+            <div class="invalid-feedback">{{ password_error }}</div>
+            {% endif %}
 
         </div>
 
         <div class="g-recaptcha" data-sitekey="{{ RECAPTCHA_PUBLIC_KEY }}"></div>
-        {% if error_message %}
-        <div class="captcha-error">{{ error_message }}</div>
+        {% if captcha_error %}
+        <div class="captcha-error">{{ captcha_error }}</div>
         {% endif %}
         <input type="submit" class="btn btn-primary" value="Submit" />
     </form>

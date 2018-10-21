@@ -8,6 +8,16 @@ import json
 import requests
 
 
+def chars_in_string(chars, s):
+    """
+    Returns true if any 1 char in chars appears in s
+    """
+    for c in chars:
+        if c in s:
+            return True
+    return False
+
+
 def captcha_is_valid(request):
     """
     Returns a boolean indicating whether the CAPTCHA was successful
