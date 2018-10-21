@@ -13,6 +13,11 @@
         User account created successfully! Please login to begin registering meal recipients
     </div>
     {% endif %}
+    {% if recent_logout %}
+    <div class="alert alert-info" role="alert">
+        Successfully logged out!
+    </div>
+    {% endif %}
     {% if invalid_login %}
     <div class="alert alert-warning" role="alert">
         Please contact <a href="mailto:info@runyons.com">info@runyons.com</a> if you are having difficulty logging in.

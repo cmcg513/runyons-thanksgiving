@@ -9,7 +9,7 @@ from website.shared import utils
 import time
 from website.settings import SHARED_PASSWORD
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import PermissionDenied
 
 
@@ -93,6 +93,8 @@ def account(request):
     """
     if NO_MORE_CLIENTS:
         return render(request, 'meals/no_more_clients.html', {})
+    elif request.user.is_authenticated:
+        return redirect('meals:registration')
     elif 'wall_validated' in request.session and request.session['wall_validated']:
         # default to no error messages
         captcha_error = None
@@ -157,6 +159,8 @@ def login_view(request):
     """
     if NO_MORE_CLIENTS:
         return render(request, 'meals/no_more_clients.html', {})
+    elif request.user.is_authenticated:
+        return redirect('meals:registration')
     else:
         # default to no error messages
         captcha_error = None
@@ -201,6 +205,12 @@ def login_view(request):
             if (int(time.time()) - account_creation) <= 5:
                 recent_account_creation = True
 
+        recent_logout = False
+        if 'logged_out' in request.session:
+            logged_out = request.session['logged_out']
+            if (int(time.time()) - logged_out) <= 5:
+                recent_logout = True
+
         return render(
             request,
             'meals/login.html',
@@ -210,9 +220,22 @@ def login_view(request):
                 'error_message': captcha_error,
                 'resubmit': resubmit,
                 'recent_account_creation': recent_account_creation,
+                'recent_logout': recent_logout,
                 'invalid_login': invalid_login
             }
         )
+
+
+def logout_view(request):
+    """
+    View for logging out
+    """
+    if request.user.is_authenticated:
+        logout(request)
+        request.session['logged_out'] = int(time.time())
+        return redirect('meals:login')
+    else:
+        return redirect('meals:login')
 
 
 def valid_wall_password(password):
