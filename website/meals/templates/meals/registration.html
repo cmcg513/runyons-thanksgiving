@@ -174,10 +174,6 @@
             {% endif %}
         </div>
 
-        <div class="g-recaptcha" data-sitekey="{{ RECAPTCHA_PUBLIC_KEY }}"></div>
-        {% if error_message %}
-        <div class="captcha-error">{{ error_message }}</div>
-        {% endif %}
         <input type="submit" class="btn btn-primary" value="Submit" />
     </form>
 {% endblock %}

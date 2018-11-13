@@ -168,9 +168,6 @@ def registration(request):
         if NO_MORE_CLIENTS:
             return render(request, 'meals/no_more_clients.html', {})
         else:
-            # default to no error messages
-            captcha_error = None
-
             # defaults to assuming this is a resubmit
             resubmit = True
 
@@ -179,27 +176,18 @@ def registration(request):
                 # parse form data
                 form = forms.RegistrationForm(request.POST)
 
-                try:
-                    valid_captcha = utils.captcha_is_valid(request)
-                except Exception:
-                    captcha_error = 'An unexpected error has occurred'
-                    valid_captcha = False
+                # validate form
+                if form.is_valid():
+                    # mock form and push data to spreadsheet
+                    mock_form = join_form_and_user(form, request.user)
+                    utils.push_form_to_sheets(MEALS_SPREADSHEET_ID, key_order, mock_form=mock_form)
 
-                if valid_captcha:
-                    # validate form
-                    if form.is_valid():
-                        # mock form and push data to spreadsheet
-                        mock_form = join_form_and_user(form, request.user)
-                        utils.push_form_to_sheets(MEALS_SPREADSHEET_ID, key_order, mock_form=mock_form)
+                    # update registration_count
+                    request.user.registrar.registration_count += 1
+                    request.user.registrar.save()
+                    request.session['registration_complete'] = int(time.time())
+                    return redirect('meals:registration')
 
-                        # update registration_count
-                        request.user.registrar.registration_count += 1
-                        request.user.registrar.save()
-                        request.session['registration_complete'] = int(time.time())
-                        return redirect('meals:registration')
-                else:
-                    # else, pass on the error
-                    captcha_error = 'Failed to validate CAPTCHA. Please make sure you check the box above'
             # handle GET
             else:
                 # init blank form
@@ -217,8 +205,6 @@ def registration(request):
                 'meals/registration.html',
                 {
                     'form': form,
-                    'RECAPTCHA_PUBLIC_KEY': RECAPTCHA_PUBLIC_KEY,
-                    'error_message': captcha_error,
                     'resubmit': resubmit,
                     'recent_registration': recent_registration
                 }
