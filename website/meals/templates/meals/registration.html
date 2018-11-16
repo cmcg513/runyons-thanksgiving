@@ -14,6 +14,19 @@
     </div>
     {% endif %}
     <h1>Thanksgiving Meal Recipient Registration</h1>
+
+    {% if CLIENT_REGISTRATION_CLOSING_SOON %}
+    <div class="alert alert-info" role="alert">
+        <span class="font-weight-bold"> Please note, </span> we are quickly approaching capacity for the number of meals
+        we can accommodate this year. We will be <span class="font-weight-bold"> closing registration at COB on
+        {{ CLIENT_REGISTRATION_CLOSING_DATE }} </span> so that we have sufficient time to plan our delivery routes.
+        If you need to make any adjustments, cancellations, or last minute additions please call
+        <span class="font-weight-bold"> (516) 221-2112 </span> or email <span class="font-weight-bold">
+        info@runyons.com </span>. Any requests for additional meals or deliveries will be handled on a case-by-case
+        basis as we are able. Thank you!
+    </div>
+    {% endif %}
+
     <p>
         Enter the recipient's information below.
     </p>
