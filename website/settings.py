@@ -131,7 +131,7 @@ X_FRAME_OPTIONS = 'DENY'
 
 SHEETS_API_SCOPE = ['https://www.googleapis.com/auth/spreadsheets']
 GOOGLE_DISCOVERY_URL = ('https://sheets.googleapis.com/$discovery/rest?version=v4')
-SHEETS_INPUT_OPTION = 'RAW'
+SHEETS_INPUT_OPTION = 'USER_ENTERED'
 
 # Import local_settings
 try:
