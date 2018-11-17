@@ -8,7 +8,8 @@ from website.settings import \
     OPEN_CLOSE_SPREADSHEET_ID, \
     OPEN_CLOSE_SPREADSHEET_RANGE, \
     OPEN_CLOSE_TRUE_VALUE, \
-    OPEN_CLOSE_FALSE_VALUE
+    OPEN_CLOSE_FALSE_VALUE, \
+    CHECK_SHEET_FOR_OPEN_CLOSE
 from website.shared import utils
 import time
 from website.settings import SHARED_PASSWORD, MEALS_SPREADSHEET_ID
@@ -355,7 +356,10 @@ def registration_open():
     if NO_MORE_CLIENTS:
         return False
     else:
-        return sheet_says_open()
+        if CHECK_SHEET_FOR_OPEN_CLOSE:
+            return sheet_says_open()
+        else:
+            return True
 
 
 def sheet_says_open():
