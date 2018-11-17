@@ -4,7 +4,9 @@ from website.settings import \
     RECAPTCHA_PUBLIC_KEY, \
     NO_MORE_CLIENTS, \
     CLIENT_REGISTRATION_FORTHCOMING, \
-    CLIENT_REGISTRATION_START_DATE
+    CLIENT_REGISTRATION_START_DATE, \
+    CLIENT_REGISTRATION_CLOSING_SOON, \
+    CLIENT_REGISTRATION_CLOSING_DATE
 from website.shared import utils
 import time
 from website.settings import SHARED_PASSWORD, MEALS_SPREADSHEET_ID
@@ -206,7 +208,9 @@ def registration(request):
                 {
                     'form': form,
                     'resubmit': resubmit,
-                    'recent_registration': recent_registration
+                    'recent_registration': recent_registration,
+                    'CLIENT_REGISTRATION_CLOSING_SOON': CLIENT_REGISTRATION_CLOSING_SOON,
+                    'CLIENT_REGISTRATION_CLOSING_DATE': CLIENT_REGISTRATION_CLOSING_DATE
                 }
             )
     else:
