@@ -108,12 +108,12 @@ def push_form_to_sheets(sheet_id, field_order, form=None, mock_form=None, add_ts
     request.execute()
 
 
-def pull_data_from_sheets(sheet_id):
+def pull_data_from_sheets(sheet_id, range_='Sheet1!A2:C'):
     """
     Grab the data from the Google Sheet specified by the given id
     """
     sheets = get_sheets_service()
-    request = sheets.values().get(spreadsheetId=sheet_id, range='Sheet1!A2:C')
+    request = sheets.values().get(spreadsheetId=sheet_id, range=range_)
     response = request.execute()
 
     return response['values']

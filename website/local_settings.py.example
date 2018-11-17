@@ -25,6 +25,9 @@ DONATIONS_SPREADSHEET_ID = 'changeme'
 # id of the meals spreadsheet
 MEALS_SPREADSHEET_ID = 'changeme'
 
+# id of open/close registration spreadsheet
+OPEN_CLOSE_SPREADSHEET_ID = 'changeme'
+
 # path to Google Sheets API key
 SHEETS_API_KEY = 'changeme'
 
@@ -44,6 +47,8 @@ DONATE_START_DATE = "changeme"
 CLIENT_REGISTRATION_FORTHCOMING = False
 
 CLIENT_REGISTRATION_START_DATE = "changeme"
+
+CHECK_SHEET_FOR_OPEN_CLOSE = False
 
 EVENT_YEAR = 2017
 
