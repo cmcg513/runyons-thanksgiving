@@ -6,7 +6,12 @@ from website.settings import \
     CLIENT_REGISTRATION_FORTHCOMING, \
     CLIENT_REGISTRATION_START_DATE, \
     CLIENT_REGISTRATION_CLOSING_SOON, \
-    CLIENT_REGISTRATION_CLOSING_DATE
+    CLIENT_REGISTRATION_CLOSING_DATE, \
+    OPEN_CLOSE_SPREADSHEET_ID, \
+    OPEN_CLOSE_SPREADSHEET_RANGE, \
+    OPEN_CLOSE_TRUE_VALUE, \
+    OPEN_CLOSE_FALSE_VALUE, \
+    CHECK_SHEET_FOR_OPEN_CLOSE
 from website.shared import utils
 import time
 from website.settings import SHARED_PASSWORD, MEALS_SPREADSHEET_ID
@@ -167,7 +172,7 @@ def registration(request):
     View for registering meal recipients
     """
     if request.user.is_authenticated:
-        if NO_MORE_CLIENTS:
+        if not registration_open():
             return render(request, 'meals/no_more_clients.html', {})
         else:
             # defaults to assuming this is a resubmit
@@ -345,5 +350,37 @@ def join_form_and_user(form, user):
     mock_form['meal_count'] = form.data['meal_count']
     mock_form['details'] = form.data['details']
     return mock_form
+
+
+def registration_open():
+    """
+    Check if registration page should be closed
+    """
+    # local setting has highest priortiy
+    if NO_MORE_CLIENTS:
+        return False
+    else:
+        if CHECK_SHEET_FOR_OPEN_CLOSE:
+            return sheet_says_open()
+        else:
+            return True
+
+
+def sheet_says_open():
+    """
+    Check spreadsheet to see if registration should be closed
+    """
+    try:
+        data = utils.pull_data_from_sheets(OPEN_CLOSE_SPREADSHEET_ID, range_=OPEN_CLOSE_SPREADSHEET_RANGE)
+        yes_no = str(data[0][0])
+        if yes_no == OPEN_CLOSE_TRUE_VALUE:
+            return True
+        elif yes_no == OPEN_CLOSE_FALSE_VALUE:
+            return False
+        else:
+            raise ValueError('Invalid value in spreadsheet')
+    except Exception:
+        # fail open
+        return True
 
 
