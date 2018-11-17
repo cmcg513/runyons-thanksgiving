@@ -133,11 +133,6 @@ SHEETS_API_SCOPE = ['https://www.googleapis.com/auth/spreadsheets']
 GOOGLE_DISCOVERY_URL = ('https://sheets.googleapis.com/$discovery/rest?version=v4')
 SHEETS_INPUT_OPTION = 'RAW'
 
-# settings for the open/close switch for registration spreadsheet
-OPEN_CLOSE_SPREADSHEET_RANGE = 'Sheet1!A1'
-OPEN_CLOSE_TRUE_VALUE = 'YES'
-OPEN_CLOSE_FALSE_VALUE = 'NO'
-
 # Import local_settings
 try:
     from website.local_settings import *
