@@ -25,6 +25,9 @@ DONATIONS_SPREADSHEET_ID = 'changeme'
 # id of the meals spreadsheet
 MEALS_SPREADSHEET_ID = 'changeme'
 
+# id of open/close registration spreadsheet
+OPEN_CLOSE_SPREADSHEET_ID = 'changeme'
+
 # path to Google Sheets API key
 SHEETS_API_KEY = 'changeme'
 
