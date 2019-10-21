@@ -134,9 +134,12 @@ GOOGLE_DISCOVERY_URL = ('https://sheets.googleapis.com/$discovery/rest?version=v
 SHEETS_INPUT_OPTION = 'USER_ENTERED'
 
 # settings for the open/close switch for registration spreadsheet
-OPEN_CLOSE_SPREADSHEET_RANGE = 'Sheet1!A1'
+OPEN_CLOSE_SPREADSHEET_RANGE = 'Button!A1'
 OPEN_CLOSE_TRUE_VALUE = 'YES'
 OPEN_CLOSE_FALSE_VALUE = 'NO'
+
+# default input Sheets range
+DEFAULT_SHEETS_RANGE = "WebEntries!A:A"
 
 # Import local_settings
 try:
