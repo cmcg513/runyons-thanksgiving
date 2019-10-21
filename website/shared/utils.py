@@ -1,4 +1,6 @@
-from website.settings import RECAPTCHA_URL, SHEETS_API_KEY, SHEETS_API_SCOPE, GOOGLE_DISCOVERY_URL, SHEETS_INPUT_OPTION, RECAPTCHA_PRIVATE_KEY
+from website.settings import \
+    RECAPTCHA_URL, SHEETS_API_KEY, SHEETS_API_SCOPE, GOOGLE_DISCOVERY_URL, SHEETS_INPUT_OPTION, RECAPTCHA_PRIVATE_KEY, \
+    DEFAULT_SHEETS_RANGE
 from oauth2client.service_account import ServiceAccountCredentials
 import httplib2
 from apiclient import discovery
@@ -91,7 +93,7 @@ def form_to_sheets_append_body(field_order, add_ts, form=None, mock_form=None):
     return body
 
 
-def push_form_to_sheets(sheet_id, field_order, form=None, mock_form=None, add_ts=True):
+def push_form_to_sheets(sheet_id, field_order, form=None, mock_form=None, add_ts=True, range_=DEFAULT_SHEETS_RANGE):
     """
     Append the data from a form to the Google Sheet specified by the given id
     """
@@ -102,7 +104,7 @@ def push_form_to_sheets(sheet_id, field_order, form=None, mock_form=None, add_ts
     request = sheets.values().append(
         spreadsheetId=sheet_id,
         body=body,
-        range='A:A',
+        range=range_,
         valueInputOption=SHEETS_INPUT_OPTION
     )
     request.execute()

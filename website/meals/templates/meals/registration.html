@@ -14,7 +14,13 @@
     </div>
     {% endif %}
     <h1>Thanksgiving Meal Recipient Registration</h1>
-
+    {% if CLIENT_REGISTRATION_FORTHCOMING %}
+    <div class="alert alert-info" role="alert">
+        <span class="font-weight-bold"> Please note, </span> we are still getting things ready for meal registration.
+        Please return here on <span class="font-weight-bold"> {{ CLIENT_REGISTRATION_START_DATE }} </span> and you can
+        begin registering meal recipients. Thank you for your patience!
+    </div>
+    {% else %}
     {% if CLIENT_REGISTRATION_CLOSING_SOON %}
     <div class="alert alert-info" role="alert">
         <span class="font-weight-bold"> Please note, </span> we are quickly approaching capacity for the number of meals
@@ -188,5 +194,6 @@
         </div>
 
         <input type="submit" class="btn btn-primary" value="Submit" />
+        {% endif %}
     </form>
 {% endblock %}

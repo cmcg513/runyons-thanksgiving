@@ -55,7 +55,7 @@ def wall(request):
     """
     if NO_MORE_CLIENTS:
         return render(request, 'meals/no_more_clients.html', {})
-    elif 'wall_validated' in request.session and request.session['wall_validated']:
+    elif ('wall_validated' in request.session and request.session['wall_validated']) or request.user.is_authenticated:
         return redirect('meals:account')
     else:
         # default to no error messages
@@ -66,7 +66,7 @@ def wall(request):
         resubmit = True
 
         # handle POST
-        if request.method == 'POST':
+        if request.method == 'POST' and not CLIENT_REGISTRATION_FORTHCOMING:
             # parse form data
             form = forms.AuthWallForm(request.POST)
 
@@ -179,7 +179,7 @@ def registration(request):
             resubmit = True
 
             # handle POST
-            if request.method == 'POST':
+            if request.method == 'POST' and not CLIENT_REGISTRATION_FORTHCOMING:
                 # parse form data
                 form = forms.RegistrationForm(request.POST)
 
@@ -215,7 +215,9 @@ def registration(request):
                     'resubmit': resubmit,
                     'recent_registration': recent_registration,
                     'CLIENT_REGISTRATION_CLOSING_SOON': CLIENT_REGISTRATION_CLOSING_SOON,
-                    'CLIENT_REGISTRATION_CLOSING_DATE': CLIENT_REGISTRATION_CLOSING_DATE
+                    'CLIENT_REGISTRATION_CLOSING_DATE': CLIENT_REGISTRATION_CLOSING_DATE,
+                    'CLIENT_REGISTRATION_FORTHCOMING': CLIENT_REGISTRATION_FORTHCOMING,
+                    'CLIENT_REGISTRATION_START_DATE': CLIENT_REGISTRATION_START_DATE
                 }
             )
     else:
