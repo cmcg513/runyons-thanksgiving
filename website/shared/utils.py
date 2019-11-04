@@ -84,7 +84,7 @@ def form_to_sheets_append_body(field_order, add_ts, form=None, mock_form=None):
     # setup the values to append to the sheet
     if form:
         for key in field_order:
-            body.append(form.data[key])
+            body.append(form.cleaned_data[key])
     elif mock_form:
         for key in field_order:
             body.append(mock_form[key])
