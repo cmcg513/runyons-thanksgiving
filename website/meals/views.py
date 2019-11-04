@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from . import forms
+from .models import Registration
 from website.settings import \
     RECAPTCHA_PUBLIC_KEY, \
     NO_MORE_CLIENTS, \
@@ -185,13 +186,7 @@ def registration(request):
 
                 # validate form
                 if form.is_valid():
-                    # mock form and push data to spreadsheet
-                    mock_form = join_form_and_user(form, request.user)
-                    utils.push_form_to_sheets(MEALS_SPREADSHEET_ID, key_order, mock_form=mock_form)
-
-                    # update registration_count
-                    request.user.registrar.registration_count += 1
-                    request.user.registrar.save()
+                    register_meal(form, request.user)
                     request.session['registration_complete'] = int(time.time())
                     return redirect('meals:registration')
 
@@ -316,6 +311,31 @@ def valid_wall_password(password):
     return str(password) == str(SHARED_PASSWORD)
 
 
+def register_meal(form, user):
+    """
+    Creates and saves a meal registration, as well as pushing data to Google Sheets and updating the user's count
+    """
+    # mock form and push data to spreadsheet
+    mock_form = join_form_and_user(form, user)
+    utils.push_form_to_sheets(MEALS_SPREADSHEET_ID, key_order, mock_form=mock_form)
+
+    # save meal to DB too
+    meal_registration = Registration(
+        registrar = user.registrar,
+        first_name = form.cleaned_data['first_name'],
+        last_name = form.cleaned_data['last_name'],
+        phone = form.cleaned_data['phone'],
+        town=form.cleaned_data['town'],
+        zip_code=form.cleaned_data['zip_code'],
+        address=form.cleaned_data['address'],
+        unit=form.cleaned_data['unit'],
+        meal_count=form.cleaned_data['meal_count'],
+        details=form.cleaned_data['details'],
+
+    )
+    meal_registration.save()
+
+
 def create_user(form):
     """
     Creates and saves a user from form data, and the associated Registrar model
@@ -342,15 +362,15 @@ def join_form_and_user(form, user):
     mock_form['user_last_name'] = user.last_name
     mock_form['user_phone'] = user.registrar.phone
     mock_form['user_email'] = user.email
-    mock_form['first_name'] = form.data['first_name']
-    mock_form['last_name'] = form.data['last_name']
-    mock_form['phone'] = form.data['phone']
-    mock_form['town'] = form.data['town']
-    mock_form['zip_code'] = form.data['zip_code']
-    mock_form['address'] = form.data['address']
-    mock_form['unit'] = form.data['unit']
-    mock_form['meal_count'] = form.data['meal_count']
-    mock_form['details'] = form.data['details']
+    mock_form['first_name'] = form.cleaned_data['first_name']
+    mock_form['last_name'] = form.cleaned_data['last_name']
+    mock_form['phone'] = form.cleaned_data['phone']
+    mock_form['town'] = form.cleaned_data['town']
+    mock_form['zip_code'] = form.cleaned_data['zip_code']
+    mock_form['address'] = form.cleaned_data['address']
+    mock_form['unit'] = form.cleaned_data['unit']
+    mock_form['meal_count'] = form.cleaned_data['meal_count']
+    mock_form['details'] = form.cleaned_data['details']
     return mock_form
 
 

@@ -80,20 +80,20 @@ class RegistrationForm(forms.Form):
     """
     Meal registration form
     """
-    first_name = forms.CharField(required=True)
-    last_name = forms.CharField(required=True)
-    phone = PhoneField(required=True)
-    town = forms.CharField(required=True)
+    first_name = forms.CharField(required=True, max_length=100)
+    last_name = forms.CharField(required=True, max_length=100)
+    phone = PhoneField(required=True, max_length=20)
+    town = forms.CharField(required=True, max_length=100)
     zip_code = forms.CharField(
         required=True,
         max_length=5,
         min_length=5,
         validators=[validate_zip_code]
     )
-    address = forms.CharField(required=True)
-    unit = forms.CharField(required=False)
+    address = forms.CharField(required=True, max_length=100)
+    unit = forms.CharField(required=False, max_length=100)
     meal_count = forms.IntegerField(
         required=True,
         validators=[validate_meal_count]
     )
-    details = forms.CharField(required=False)
+    details = forms.CharField(required=False, max_length=1000)
