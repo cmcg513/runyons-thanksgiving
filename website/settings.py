@@ -141,6 +141,9 @@ OPEN_CLOSE_FALSE_VALUE = 'NO'
 # default input Sheets range
 DEFAULT_SHEETS_RANGE = "WebEntries!A:A"
 
+# Special COVID-19 page
+COVID_19 = False
+
 # Import local_settings
 try:
     from website.local_settings import *

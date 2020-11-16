@@ -20,6 +20,26 @@
   <p>
     Happy Holidays!
   </p>
+{% elif COVID_19 %}
+    <p class="lead">
+      This year we are accepting <a href="{% url 'donations:index' %}">Donations</a> on behalf of
+    <a href="https://www.licares.org/">Long Island Cares</a>.
+    </p>
+  <p>
+    We are heartbroken to inform you that we will not be holding our annual Thanks-4-Giving Outreach this year.
+      Given the constraints and risks imposed by the COVID-19 pandemic, we do not feel we can safely do this event as
+      we have in years prior.
+  </p>
+  <p>
+    <b>That said</b>, while we won't be preparing and delivering meals, we will still be taking donations on behalf of
+    <a href="https://www.licares.org/">Long Island Cares</a>. Please take a look at our
+    <a href="{% url 'donations:index' %}">Donations</a> page for an updated list of items needed! We will be collecting
+    at Runyon's as per usual, so please drop them off at your earliest convenience.
+  </p>
+  <p>
+    Thank you all for supporting this event, and we hope to see you all under better circumstances in {{ next_year }}.
+    Happy Holidays!
+  </p>
 {% else %}
   <p class="lead">
   Welcome to the landing page for the {{ EVENT_YEAR }} Thanksgiving Meal Drive!
